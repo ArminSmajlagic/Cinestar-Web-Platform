@@ -1,0 +1,38 @@
+#wrapper{
+  height: 100%;
+  width: 100%;
+  padding: 5%;
+}
+.film{
+  height: 40%;
+  width: 100%;
+  margin-top:30px;
+}
+.slika{
+  height:100%;
+  width:23%;
+  float:left;
+  display:inline-block;
+}
+.detalji{
+  height:100%;
+  width:77%;
+  display:inline-block;
+  background-color:#7d7d7d;
+  padding:2%;
+  text-align:center;
+  font-size: x-large;
+  line-height: 28px;
+  //  font-size: 20px;
+  box-sizing: border-box;
+}
+span{
+  margin-top:5px;
+  margin-right: 5px;
+}
+.projekcije{
+  width: auto;
+  height: auto;
+  background-color:blue;
+
+}

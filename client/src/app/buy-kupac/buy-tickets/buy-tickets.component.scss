@@ -1,0 +1,66 @@
+.scroll {
+
+  height: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+
+}
+
+.scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  border-radius: 10px;
+}
+.scroll::-webkit-scrollbar-track {
+  background-color: rgba(12, 13, 15, 0.9);
+  border-radius: 10px;
+
+}
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #c3d804;
+  border-radius: 10px;
+}
+
+.image{
+  background-size: 240px 365px!important;
+  background-repeat: no-repeat!important;
+
+}
+
+.seat:hover{
+  background-color: rgb(251, 248, 37);
+  transition: .4s;
+}
+
+
+.seat{
+  transition: 1s;
+  background-color: #f1ff74;
+
+}
+
+.btn:hover{
+  background-color: rgba($color: #000000, $alpha: 0.5)!important;
+  color: white!important;
+  transition: .7s;
+
+}
+
+.receat{
+  transition: .9s;
+}
+
+.receat:hover{
+  background-color: rgba($color: #edf022, $alpha: 0.5)!important;
+  transition: .9s;
+  color:black!important;
+  opacity: 50%!important;
+}
+
+.receat:hover{
+  p{
+    color:black!important;
+    transition: .9s;
+  }
+}

@@ -1,0 +1,14 @@
+
+
+.user{
+  background:rgba(0,0,0,.4);
+  transition: .5s;
+}
+.user:hover{
+  background:rgba(161, 161, 161, 0.1);
+  transition: .5s;
+}
+
+.filter{
+  background: linear-gradient(to right,rgba(255, 255, 255, 0.01),rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0.01));
+}

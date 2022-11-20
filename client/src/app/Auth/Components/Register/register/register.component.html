@@ -1,0 +1,175 @@
+<!-- <div class="modal rounded-3" id="modalRegistration" tabindex="-1" role="dialog" aria-labelledby="modalRegistration" aria-hidden="true" >
+  <div class="modal-dialog"   role="document" style="border-top-left-radius:100px;border-top-right-radius: 100px; border-bottom-left-radius: 100px; border-bottom-right-radius: 100px;margin-left: 33%!important;">
+    <div class="modal-content"  style="border-top-left-radius:100px;border-top-right-radius: 100px; border-bottom-left-radius: 100px; border-bottom-right-radius: 100px; width:800px;" >
+      <div class="p-3 d-flex justify-content-between align-items-center"style="background:#217dbe;border-top-left-radius:15px;border-top-right-radius: 15px;">
+        <p>.</p>
+        <h5 class="modal-title text-center center" id="modalLoginTitle">{{"Cinestar" | uppercase}}</h5>
+        <button type="button" class="close border-0 fs-3" style="background: #217dbe;" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="register(registrationForm)"  class="mt-5 form-group d-flex flex-column justify-content-center align-items-center" #registrationForm="ngForm">
+          <div class="d-flex flex-row mb-5">
+          <div class="col-6 m-0 p-0 me-5">
+          <div class="col-12 m-0 p-0">
+          <input required placeholder="Korisnicko ime"   #username="ngModel"[style.border]="!username.valid && username.touched ? '1px solid red!important' : '1px solid white'" ngModel type="text" class="form-control border border-1 border-dark" name="username" style="background: black;font-size: 20px;" >
+          <p style="color: red;" *ngIf="!username.valid && username.touched">Obavezno polje</p>
+
+        </div>
+        <div class="col-12 m-0 p-0">
+          <input required placeholder="Lozinka" #password="ngModel"[style.border]="!password.valid && password.touched ? '1px solid red!important' : ''" ngModel type="password" class="form-control border border-1 border-dark" name="password" style="background: black;font-size: 20px;">
+          <p style="color: red;" *ngIf="!password.valid && password.touched">Obavezno polje</p>
+
+        </div>
+        <div class="col-12 m-0 p-0">
+          <input  required placeholder="Ponovo unesite lozinku" #confirmPassword="ngModel"[style.border]="!confirmPassword.valid && confirmPassword.touched ? '1px solid red!important' : ''" ngModel type="password" class="form-control border border-1 border-dark" name="confPassord" style="background: black;font-size: 20px;">
+          <p style="color: red;" *ngIf="!confirmPassword.valid && confirmPassword.touched">Obavezno polje</p>
+
+        </div>
+      </div>
+      <div class="col-5">
+        <div class="col-12 m-0 p-0">
+          <input required email placeholder="E-mail" #email="ngModel"[style.border]="!email.valid && email.touched ? '1px solid red!important' : ''" ngModel type="text" class="form-control border border-1 border-dark" name="email" style="background: black;font-size: 20px;">
+          <p style="color: red;" *ngIf="!email.valid && email.touched">Obavezno polje</p>
+
+        </div>
+        <label for="" style="font-size: 10px;color: white;">Broj telefona</label>
+        <div class="col-12 m-0 p-0  d-flex flex-row">
+          <select  class="col-2 pe-1 border border-1 border-dark" style="background-color: black;">
+            <option value="384" selected class="color:white">384</option>
+          </select>
+          <input required #phoneNumber="ngModel"[style.border]="!phoneNumber.valid && phoneNumber.touched ? '1px solid red!important' : ''" ngModel type="text" class="form-control border border-1 border-dark " name="phoneNumber" style="background: black;font-size: 20px;">
+          <p style="color: red;" *ngIf="!phoneNumber.valid && phoneNumber.touched">Obavezno polje</p>
+        </div>
+      </div>
+    </div>
+        <button type="submit" class="btn mt-5 col-5"style="background:#217dbe;font-size:18px;color:black" [disabled]="!registrationForm.valid"  >REGISTRACIJA</button>
+        <p class="mt-4 text-center" style="color:#999999;font-size: 13px;">Imate problema pri prijavi ili registraciji ? Kontaktirajte nas za pomoć: Tel: +382 12 345 678 Email: RS1_FIT@gmail.com</p>
+      </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+ -->
+
+<div class="registration cotainer-fluid w-100 h-100 d-flex justify-content-center align-items-center fw-bold"
+  style="padding: 50px;">
+  <form action="" class="d-flex flex-column col-12 justify-content-center align-items-center"
+    [formGroup]="registrationForm" (submit)="register(registrationForm)">
+    <div
+      class="register-panel d-flex flex-column justify-content-center align-items-center col-xs-2 col-sm-10 col-md-8 col-lg-6 col-xl-6 col-xxl-4 ps-5 pe-5 p-3 border border-light rounded p-0">
+      <div class="shield  border border-2 border-light-2 rounded text-center mb-5 p-3">
+        <h3 class="text-light tag">Dobrodošli u</h3>
+        <h3 class="text-light tag">Cinestar</h3>
+      </div>
+      <div class="col-10 d-flex flex-column justify-content-center align-items-center">
+
+        <!--Ime prezime-->
+        <label for="" class="p-1 text-light">Ime i prezime</label>
+        <div class="col-12 d-flex">
+          <input required minlength="5" maxlength="25" name="ime_prezime" formControlName="ime_prezime" type="text"
+            class="form-control col-12 border border-light bg-dark text-white bg-opacity-25  ">
+          <p class="valid-txt" [style.color]="!regForma.ime_prezime.valid && regForma.ime_prezime.touched?'red':'white'"
+            style="height: 0px;" class=" fs-5 mt-2 ms-1 ">*</p>
+        </div>
+        <p class="valid-txt" style="color: red;" *ngIf="!regForma.ime_prezime.valid && regForma.ime_prezime.touched">
+          Obavezno polje</p>
+
+        <!--Email-->
+        <label for="" class="p-1 text-light">Email</label>
+        <div class="col-12 d-flex">
+          <input required minlength="5" maxlength="25" name="email" formControlName="email" email type="text"
+            class="form-control col-12 border border-light bg-dark text-white bg-opacity-25">
+          <p class="valid-txt" [style.color]="!regForma.email.valid && regForma.email.touched?'red':'white'"
+            style="height: 0px;" class=" fs-5 mt-2 ms-1 ">*</p>
+        </div>
+        <p class="valid-txt" style="color: red;" *ngIf="!regForma.email.value && regForma.email.touched">Obavezno polje</p>
+        <p class="valid-txt" style="color: red;" *ngIf="!regForma.email.valid && regForma.email.touched">Dali vaš unos ima format example@mail.com?
+        </p>
+
+        <!--Username-->
+        <label for="username" class="p-1 text-light">Korisnicko ime</label>
+        <div class="col-12 d-flex">
+          <input required minlength="5" maxlength="15" name="username" formControlName="username" type="text"
+            class="form-control col-12 border border-light bg-dark text-white bg-opacity-25">
+          <p class="valid-txt" [style.color]="!regForma.username.valid && regForma.username.touched?'red':'white'"
+            style="height: 0px;" class=" fs-5 mt-2 ms-1 ">*</p>
+        </div>
+        <p class="valid-txt" style="color: red;" *ngIf="!regForma.username.valid && regForma.username.touched">Obavezno polje sa minimalno 5 karaktera</p>
+        <p class="valid-txt" style="color: red;" *ngIf="!regForma.username.valid && regForma.username.touched">Korisnicko ime ne smije sadržavati specijalne znakove i mora biti dovoljno dugo!</p>
+
+        <!--Password-->
+        <label for="" class="p-1 text-light">Lozinka</label>
+        <div class="col-12 d-flex">
+          <input required minlength="5" maxlength="16" formControlName="password"
+            [class]="!regForma.password.valid && regForma.password.touched ? 'border-danger' : 'border-light'" ngModel
+            [type]="passcode" class="form-control col-12 border border-light bg-dark text-white bg-opacity-25"
+            name="password">
+          <i *ngIf="passcode=='text'" style="height: 0px;" class="fa fa-eye fs-5 mt-2 ms-1 valid-text text-light"
+            (click)="passwordToggle()"></i>
+          <i *ngIf="passcode=='password' || regForma.password.valid" style="height: 0px;"
+            class="fa fa-eye-slash fs-5 mt-2 ms-1 valid-text text-light" (click)="passwordToggle()"></i>
+        </div>
+        <p class="valid-txt" style="color: red;" *ngIf="!regForma.password.valid && regForma.password.touched">Obavezno polje sa minimalno 5 karaktera</p>
+
+        <label for="" class="p-1 text-light">Potvrdi Lozinku</label>
+        <div class="col-12 d-flex">
+          <input (click)="log({confPasswd:conf_password.value,passwd:regForma.password.value})" [type]="passcode" [ngModelOptions]="{standalone: true}" required minlength="5" maxlength="15" name="conf_password" #conf_password="ngModel" ngModel type="text"
+            class="form-control col-12 border border-light bg-dark text-white bg-opacity-25">
+          <p class="valid-txt" [style.color]="!conf_password.valid && conf_password.touched?'red':'white'"
+            style="height: 0px;" class=" fs-5 mt-2 ms-1 ">*</p>
+        </div>
+        <p class="valid-txt" style="color: red;" *ngIf="!conf_password.valid && conf_password.touched">Obavezno polje sa minimalno 5 karaktera
+        <p class="valid-txt" style="color: red;" *ngIf="conf_password.value != regForma.password.value && conf_password.touched">Lozinke se moraju podudarati
+        </p>
+
+        <label for="" class=" text-light fw-bold">Broj telefona</label>
+              <input type="tel" required formControlName="broj_telefona" placeholder="" name="broj_telefona" class="bg-opacity-25 form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!regForma.broj_telefona.valid && regForma.broj_telefona.touched">Obavezno polje</p>
+
+        <!--Spol-->
+        <label for="" class="text-light">Datum rođenja</label>
+        <input type="date" class="form-control datepicker border-light rounded  bg-dark text-white bg-opacity-25"
+          name="b_date" formControlName="b_date" required>
+
+          <p class="valid-txt " style="color: red;" *ngIf="!regForma.b_date.value && regForma.b_date.touched">Obavezno polje</p>
+
+        <label for="" class="mt-1 text-light fw-bold ">Spol</label>
+        <select id="spol" class="w-75 mt-2 mb-2 text-center rounded me-1 p-1 float-end fw-bold bg-dark bg-opacity-25 text-light"
+          formControlName="spol"  required>
+          <option [value]="o.value" class="bg-dark bg-opacity-75 fw-bold" *ngFor="let o of spolovi;index as i">
+            {{o.naziv}}
+          </option>
+        </select>
+        <p class="valid-txt" style="color: red;" *ngIf="!regForma.spol.value && regForma.spol.touched">Obavezno polje</p>
+
+        <!--Grad-->
+
+        <label for="" class="mt-1 text-light">Grad u kojem boravite</label>
+        <select id="grad" required  class="w-75 text-center rounded me-1 p-1 float-end fw-bold bg-dark text-light bg-opacity-25" formControlName="gradovi" >
+          <option [value]="o.value" class="bg-dark bg-opacity-75  fw-bold" *ngFor="let o of gradovi;index as i" >
+            {{o.naziv}}
+          </option>
+        </select>
+        <p class="valid-txt" style="color: red;" *ngIf="!regForma.spol.value && regForma.gradovi.touched">Obavezno polje</p>
+
+
+        <div class="combo mt-4">
+          <input type="checkbox" class="form-check-input  border-light bg-dark text-white">
+          <label for="" class="form-check-label p-1 text-light " style="font-size: 14px;">Subscribe na informacije o
+            novim filmovima koji dolaze.</label>
+        </div>
+        <div class="combo mt-2">
+          <input type="checkbox" class="form-check-input  border-light bg-dark text-white">
+          <label for="" class="form-check-label p-1 text-light " style="font-size: 14px;">Prihvatam Terms &
+            Conditions.</label>
+        </div>
+        <input type="submit" value="Registriraj se" [disabled]="!registrationForm.valid" [class]="!registrationForm.valid?'bg-opacity-50':'bg-opacity-25'" class="btn bg-light text-white mt-3 fw-bold">
+        <p class="mt-4 text-center" style="color:#ffffff;font-size: 13px;">Imate problema pri prijavi ili registraciji ?
+          Kontaktirajte nas za pomoć: Tel: +382 12 345 678 Email: RS1_FIT@gmail.com</p>
+      </div>
+
+    </div>
+  </form>

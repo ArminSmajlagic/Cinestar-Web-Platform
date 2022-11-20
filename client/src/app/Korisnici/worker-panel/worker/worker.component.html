@@ -1,0 +1,200 @@
+<div class="container-fluid w-100 h-100 p-0 m-0 d-flex align-items-center justify-content-center ">
+
+  <div class="inputs col-9  h-75 d-flex flex-column  border border-dark rounded  "
+    style="background: rgba(0,0,0,.3)">
+    <h1 class="align-self-center text-light mt-5">Menađment radnika</h1>
+    <form  class="filter  w-100 p-2 d-flex flex-row justify-content-center align-items-center" [formGroup]="contactForm" (ngSubmit)="clearFilters()">
+      <select id="Grad" (click)="SearchPoGradu($event)"  class="col-2 text-center rounded me-1 p-1 float-end fw-bold bg-dark text-light" (change)="SearchPoGradu($event)" [(ngModel)]="city" formControlName="pretragaGrada">
+        <option [value]="i" *ngFor="let o of gradovi;index as i">
+          {{o.naziv}}
+        </option>
+      </select>
+      <input type="text" formControlName="searchText" name="searchText" placeholder="Trazi" class="rounded bg-dark text-light border-0 p-1  me-1" [(ngModel)] = Name (keyup)="refresh()">
+      <input type="submit" value="Ucitaj ponovo" class="btn rounded bg-dark text-light border-0 fw-bold ps-2 pe-2 ms-1" >
+      <button class="btn rounded bg-dark text-light border-0 fw-bold ps-2 pe-2 ms-1" (click)="toggle('dodaj')">Dodaj</button>
+    </form>
+    <div
+      class="d-flex flex-xs-column flex-sm-column flex-md-column flex-lg-column flex-xl-row align-items-center justify-content-center p-0 m-0 h-100 mt-3">
+      <div class=" col-sm-12 col-xs-12 col-xxl-6 col-xl-6 col-lg-12">
+        <div class="users-list p-5 scroll" >
+          <div *ngFor="let worker of workers | filterPipe: contactForm.value.searchText"
+
+            class="user w-100 rounded-2 text-light d-flex flex-row justify-content-center align-items-center text-center mb-3 pt-2"
+            (click)="odaberi(worker.id)">
+            <p>{{worker?.ime_prezime}}</p>
+            <p class="p-2">|</p>
+            <p>{{worker?.email}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class=" col-sm-12 col-xs-12 col-xxl-6 col-xl-6 col-lg-12">
+        <h1 *ngIf="none" class="text-light text-center">Menađment panel</h1>
+        <h1 *ngIf="none" class="text-light text-center">Broj upošljenih : {{count}}</h1>
+        <div class="user-control d-flex justify-content-center align-items-center p-5 h-100" *ngIf="default">
+          <div
+            class="rounded m-5 bg-light bg-opacity-10 d-flex flex-column justify-content-center align-items-center w-100 h-100">
+            <p class="fw-bold fs-4 text-light mb-5">Kontrole za {{worker?.username}}</p>
+            <button class="btn btn-dark text-light  col-6 mb-3" (click)="toggle('uredi')">Uredi</button>
+            <button class="btn btn-dark text-light col-6 mb-3" (click)="remove(worker.id)">Obriši</button>
+            <button class="btn btn-dark text-light col-6 mb-3" (click)="toggle('none')">Nazad</button>
+          </div>
+        </div>
+        <div class="scroll" *ngIf="uredi">
+          <div
+            class="bg-light bg-opacity-10  rounded d-flex flex-column justify-content-center align-items-center w-100 ">
+            <button class="btn btn-outline-light position-absolute bg-light bg-opacity-50 align-self-baseline ms-3" (click)="toggle('back')">Nazad</button>
+
+            <form [formGroup]="urediForma" (ngSubmit)="update(worker.id,urediForma)"
+            class="col-6 d-flex flex-column justify-content-center align-items-center">
+            <label for="" class=" text-light fw-bold">Korisnicko ime</label>
+            <input formControlName="username" minlength="5" maxlength="15" type="text" name="username" class="form-control bg-dark text-light">
+            <p class="valid-txt" style="color: red;font-size: 13px" *ngIf="!getUrediForm.username.valid && getUrediForm.username.touched">Obavezno polje</p>
+            <label for="" class=" text-light fw-bold">Ime prezime</label>
+            <input minlength="5" maxlength="25" required formControlName="ime_prezime" name="ime_prezime" type="text" class="form-control bg-dark text-light">
+            <p class="valid-txt" style="color: red;font-size: 13px" *ngIf="!getUrediForm.ime_prezime.valid && getUrediForm.ime_prezime.touched">Obavezno polje</p>
+
+            <label for="" class="text-light fw-bold">Lozinka</label>
+            <div class="d-flex col-12 float-start">
+              <input minlength="5" maxlength="16" required [type]="passcode" formControlName="password" name="password" class="form-control  col-12 bg-dark text-light float-start">
+              <i *ngIf="passcode=='text'" class="fa fa-eye fs-5 mt-3 ms-1  text-light" (click)="passwordToggle()"></i>
+              <i *ngIf="passcode=='password'" class="fa fa-eye-slash fs-5 mt-3 ms-1  text-light" (click)="passwordToggle()"></i>              </div>
+            <p class="valid-txt" style="color: red;font-size: 13px" *ngIf="!getUrediForm.password.valid && getUrediForm.password.touched">Obavezno polje</p>
+
+            <label  for="" class=" text-light fw-bold">Mail</label>
+            <input email required type="email" formControlName="email" name="email" class="form-control bg-dark text-light">
+            <p class="valid-txt" style="color: red; font-size: 13px" *ngIf="!getUrediForm.email.valid && getUrediForm.email.touched">Obavezno polje</p>
+
+            <label for="" class=" text-light fw-bold">Broj telefona</label>
+            <input type="tel" required formControlName="broj_telefona" placeholder="" name="broj_telefona" class="form-control bg-dark text-light">
+            <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getUrediForm.broj_telefona.valid && getUrediForm.broj_telefona.touched">Obavezno polje</p>
+
+            <label for="" class=" text-light fw-bold">JMBG</label>
+            <input type="text" required formControlName="jmbg" placeholder="" name="jmbg" class="form-control bg-dark text-light">
+            <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getUrediForm.jmbg.valid && getUrediForm.jmbg.touched">Obavezno polje</p>
+
+
+            <label for="" class=" text-light fw-bold">Strucna sprema</label>
+            <input type="text" required formControlName="strucnaSprema" name="strucnaSprema" class="form-control bg-dark text-light">
+            <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getUrediForm.strucnaSprema.valid && getUrediForm.strucnaSprema.touched">Obavezno polje</p>
+
+            <label for="" class=" text-light fw-bold">Plata</label>
+            <input type="text" required formControlName="plata" name="plata" class="form-control bg-dark text-light">
+            <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getUrediForm.plata.valid && getUrediForm.plata.touched">Obavezno polje</p>
+
+            <!-- <label for="" class=" text-light fw-bold">Datum rođenja</label>
+            <input type="date" required formControlName="b_date" name="roden" class="form-control bg-dark text-light">
+            <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getUrediForm.b_date.valid && getUrediForm.b_date.touched">Obavezno polje</p>
+
+            <label for="" class=" text-light fw-bold">Datum upošljenja</label>
+            <input type="date" required formControlName="datum_uposlenja" name="uposlen" class="form-control bg-dark text-light">
+            <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getUrediForm.datum_uposlenja.valid && getUrediForm.datum_uposlenja.touched">Obavezno polje</p> -->
+
+            <label for="" class="mt-1 text-light fw-bold w-100">Radna pozicija</label>
+            <select id="uloga"  class="w-75 mt-2 mb-2 text-center rounded me-1 p-1 float-end fw-bold bg-dark text-light" formControlName="uloga" (change)="setUloga($event)">
+              <option [value]="o.value" *ngFor="let o of uloge;index as i" >
+                {{o.naziv}}
+              </option>
+            </select>
+
+            <label for="" class="mt-1 text-light fw-bold w-100">Spol</label>
+            <select id="spol"  class="w-75 mt-2 mb-2 text-center rounded me-1 p-1 float-end fw-bold bg-dark text-light" formControlName="spol" (change)="setSpol($event)">
+              <option [value]="o.value" *ngFor="let o of spolovi;index as i" >
+                {{o.naziv}}
+              </option>
+            </select>
+
+            <label for="" class="mt-1 text-light fw-bold w-100">Grad</label>
+            <select id="grad"  class="w-75 text-center rounded me-1 p-1 float-end fw-bold bg-dark text-light" formControlName="grad" (change)="setGrad($event)">
+              <option [value]="o.value" *ngFor="let o of gradovi;index as i" >
+                {{o.naziv}}
+              </option>
+            </select>
+
+
+            <div class="d-flex flex-row ">
+              <input type="submit" [disabled]="!urediForma.valid" class="btn btn-outline-light m-2 fw-bold" value="Spremi promjene" />
+            </div>
+          </form>
+          </div>
+        </div>
+          <div *ngIf="dodaj" class=" scroll">
+            <div class="bg-dark bg-opacity-10 rounded d-flex flex-column justify-content-center align-items-center p-0 m-0 w-100">
+              <button class="btn position-absolute bg-light bg-opacity-50 align-self-baseline ms-3" (click)="toggle('none')">Nazad</button>
+
+            <form [formGroup]="dodajForm" (ngSubmit)="insert(dodajForm)"
+              class="col-6 d-flex flex-column justify-content-center align-items-center">
+              <label for="" class=" text-light fw-bold">Korisnicko ime</label>
+              <input formControlName="username" minlength="5" maxlength="15" type="text" name="username" class="form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red;font-size: 13px" *ngIf="!getDodajForm.username.valid && getDodajForm.username.touched">Obavezno polje</p>
+              <label for="" class=" text-light fw-bold">Ime prezime</label>
+              <input minlength="5" maxlength="25" required formControlName="ime_prezime" name="ime_prezime" type="text" class="form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red;font-size: 13px" *ngIf="!getDodajForm.ime_prezime.valid && getDodajForm.ime_prezime.touched">Obavezno polje</p>
+
+              <label for="" class="text-light fw-bold">Lozinka</label>
+              <div class="d-flex col-12 float-start">
+                <input minlength="5" maxlength="16" required [type]="passcode" formControlName="password" name="password" class="form-control  col-12 bg-dark text-light float-start">
+                <i *ngIf="passcode=='text'" class="fa fa-eye fs-5 mt-3 ms-1  text-light" (click)="passwordToggle()"></i>
+                <i *ngIf="passcode=='password'" class="fa fa-eye-slash fs-5 mt-3 ms-1  text-light" (click)="passwordToggle()"></i>              </div>
+              <p class="valid-txt" style="color: red;font-size: 13px" *ngIf="!getDodajForm.password.valid && getDodajForm.password.touched">Obavezno polje</p>
+
+              <label  for="" class=" text-light fw-bold">Mail</label>
+              <input email required type="email" formControlName="email" name="email" class="form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red; font-size: 13px" *ngIf="!getDodajForm.email.valid && getDodajForm.email.touched">Obavezno polje</p>
+
+              <label for="" class=" text-light fw-bold">Broj telefona</label>
+              <input type="tel" required formControlName="broj_telefona" placeholder="" name="broj_telefona" class="form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getDodajForm.broj_telefona.valid && getDodajForm.broj_telefona.touched">Obavezno polje</p>
+
+              <label for="" class=" text-light fw-bold">JMBG</label>
+              <input type="text" required formControlName="jmbg" placeholder="" name="jmbg" class="form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getDodajForm.jmbg.valid && getDodajForm.jmbg.touched">Obavezno polje</p>
+
+
+              <label for="" class=" text-light fw-bold">Strucna sprema</label>
+              <input type="text" required formControlName="strucnaSprema" name="strucnaSprema" class="form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getDodajForm.strucnaSprema.valid && getDodajForm.strucnaSprema.touched">Obavezno polje</p>
+              <label for="" class=" text-light fw-bold">Datum rođenja</label>
+              <input type="date" required formControlName="b_date" name="roden" class="form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getDodajForm.b_date.valid && getDodajForm.b_date.touched">Obavezno polje</p>
+
+              <label for="" class=" text-light fw-bold">Datum upošljenja</label>
+              <input type="date" required formControlName="datum_uposlenja" name="uposlen" class="form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getDodajForm.strucnaSprema.valid && getDodajForm.strucnaSprema.touched">Obavezno polje</p>
+
+              <label for="" class=" text-light fw-bold">Plata</label>
+              <input type="text" required formControlName="plata" name="plata" class="form-control bg-dark text-light">
+              <p class="valid-txt" style="color: red; font-size: 13px;" *ngIf="!getDodajForm.plata.valid && getDodajForm.plata.touched">Obavezno polje</p>
+
+              <label for="" class="mt-1 text-light fw-bold w-100">Pozicija</label>
+              <select id="pozicija"  class="w-75 mt-2 mb-2 text-center rounded me-1 p-1 float-end fw-bold bg-dark text-light" formControlName="uloga" (change)="setUloga($event)">
+                <option [value]="o.value" *ngFor="let o of uloge;index as i" >
+                  {{o.naziv}}
+                </option>
+              </select>
+
+              <label for="" class="mt-1 text-light fw-bold w-100">Spol</label>
+              <select id="spol"  class="w-75 mt-2 mb-2 text-center rounded me-1 p-1 float-end fw-bold bg-dark text-light" formControlName="spol" (change)="setSpol($event)">
+                <option [value]="o.value" *ngFor="let o of spolovi;index as i" >
+                  {{o.naziv}}
+                </option>
+              </select>
+
+              <label for="" class="mt-1 text-light fw-bold w-100">Grad</label>
+              <select id="grad"  class="w-75 text-center rounded me-1 p-1 float-end fw-bold bg-dark text-light" formControlName="grad" (change)="setGrad($event)">
+                <option [value]="o.value" *ngFor="let o of gradovi;index as i" >
+                  {{o.naziv}}
+                </option>
+              </select>
+
+
+              <div class="d-flex flex-row ">
+                <input type="submit" [disabled]="!dodajForm.valid" class="btn btn-outline-light m-2 fw-bold" value="Dodaj radnika" />
+              </div>
+            </form>
+          </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

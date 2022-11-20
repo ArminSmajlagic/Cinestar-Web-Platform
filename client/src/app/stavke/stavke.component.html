@@ -1,0 +1,71 @@
+<input type="text" id="name" name="name" class="form-control"
+       required minlength="4" appForbiddenName="Charlie"
+       [(ngModel)]="hilfe.name" #name="ngModel">
+
+<div *ngIf="name.invalid && (name.dirty || name.touched)"
+     class="alert upozorenje">
+
+  <div *ngIf="name.errors?.['required']">
+    *Name is required.
+  </div>
+  <div *ngIf="name.errors?.['minlength']">
+    Name must be at least 4 characters long.
+  </div>
+  <div *ngIf="name.errors?.['forbiddenName']">
+    Name cannot be Bob.
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+
+<H1>Stavke ponude ID {{this.id}}</H1>
+
+<table  class="table table-hover table-dark uzad">
+  <tr >
+    <th>ID</th>
+    <th>Naziv stavke</th>
+    <th>Datum pocetka</th>
+    <th>Datum zavrsetka</th>
+    <th>Ukupna cijena</th>
+    <th>Akcija</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let s of getStavkePodaci()">
+    <td>{{s.id}}</td>
+    <td>{{s.naziv}}</td>
+    <td>{{s.datumPocetka}}</td>
+    <td >{{s.datumZavrsetka}}</td>
+    <td >{{s.ukupnaCijena}}</td>
+
+    <td>
+      <button (click)="obrisiStavku(s)"  class="btn btn-light">Obrisi</button>
+    <button   class="btn btn-light odmakni" >Uredi</button>
+      <button   class="btn btn-light odmakni" (click)="UcitajStavke()" >Stavke</button>
+
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+<button class="btn btn-light" id="dodajButton"  >Nova ponuda</button>
+
+
+
+-->

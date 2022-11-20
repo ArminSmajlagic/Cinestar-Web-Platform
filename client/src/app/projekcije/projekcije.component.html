@@ -1,0 +1,230 @@
+<H1>Projekcije</H1>
+
+<table class="table table-hover table-dark uzad">
+  <tr >
+    <th>ID</th>
+    <th>Dan</th>
+    <th>Datum i vrijeme prikazivanja</th>
+    <th>Vrsta projekcije</th>
+    <th>Film</th>
+
+    <th>Akcija</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let s of getProjekcijePodaci()">
+    <td>{{s.id}}</td>
+    <td>{{s.dan}}</td>
+    <td>{{s.vrijemePrikazivanja | date:'medium'}}</td>
+    <td >{{s.vrstaProjekcije.dimenzija}}</td>
+    <td >{{s.film.naziv}}</td>
+
+    <td>
+      <button  class="btn btn-light" (click)="obrisiProjekciju(s)">Obrisi</button>
+      <button data-bs-toggle="modal" data-bs-target="#edit" (click)="urediProjekciju(s)" class="btn btn-light"  style="margin-left: 10px">Uredi</button>
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+<button class="btn btn-light" id="dodajButton" (click)="prikaziDodavanje=true"
+        data-bs-toggle="modal" data-bs-target="#add"    >Nova projekcija</button>
+
+
+
+<!-- Modal dodvanje -->
+<div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLabel">Dodavanje projekcije</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="prikaziDodavanje">
+          <form>
+            <div class="form-group">
+              <label for="dan">Dan prikazivanja</label>
+              <input [(ngModel)]="add.dan" [ngModelOptions]="{standalone: true}"
+                     type="text" class="form-control" id="dan"  name="dan" required #dan="ngModel" placeholder="Unesite dan">
+              <div *ngIf="dan.invalid && (dan.dirty || dan.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="dan.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="vrijeme">Datum i vrijeme prikazivanja projekcije</label>
+              <input required name="vrijeme" #vrijeme="ngModel" [(ngModel)]="add.vrijemePrikazivanja" [ngModelOptions]="{standalone: true}"
+                      type="datetime-local" class="form-control" id="vrijeme"  placeholder="Unesite vrijeme">
+              <div *ngIf="vrijeme.invalid && (vrijeme.dirty || vrijeme.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="vrijeme.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="film">ID filma</label>
+              <input type="number" [(ngModel)]="add.filmId" [ngModelOptions]="{standalone: true}"
+                     class="form-control" id="film"  placeholder="Unesite ID filma">
+
+            </div>
+            <div class="form-group">
+              <label for="vProj">ID vrste projekcije</label>
+              <input type="number" [(ngModel)]="add.vrstaProjekcijeId" [ngModelOptions]="{standalone: true}"
+                     class="form-control" id="vProj"  placeholder="Unesite ID vrste projekcije">
+            </div>
+            <br>
+
+
+          </form>
+
+
+          <button [disabled]="!dan.valid || !vrijeme.valid"
+                 type="button" class="btn btn-primary addBtn" (click)="dodajProjekciju()" data-bs-dismiss="modal">Dodaj</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- dodavanje
+<div *ngIf="prikaziDodavanje" class="uzad">
+  <h1>Dodavanje projekcije</h1>
+  <form>
+    <div class="form-group">
+      <label for="dan">Dan prikazivanja</label>
+      <input [(ngModel)]="add.dan" [ngModelOptions]="{standalone: true}"
+             type="text" class="form-control" id="dan"  placeholder="Unesite dan">
+    </div>
+    <div class="form-group">
+      <label for="vrijeme">Datum i vrijeme prikazivanja projekcije</label>
+      <input  [(ngModel)]="add.vrijemePrikazivanja" [ngModelOptions]="{standalone: true}"
+              type="datetime-local" class="form-control" id="vrijeme"  placeholder="Unesite vrijeme">
+    </div>
+
+
+    <div class="form-group">
+      <label for="film">ID filma</label>
+      <input type="number" [(ngModel)]="add.filmId" [ngModelOptions]="{standalone: true}"
+             class="form-control" id="film"  placeholder="Unesite ID filma">
+    </div>
+    <div class="form-group">
+      <label for="vProj">ID vrste projekcije</label>
+      <input type="number" [(ngModel)]="add.vrstaProjekcijeId" [ngModelOptions]="{standalone: true}"
+             class="form-control" id="vProj"  placeholder="Unesite ID vrste projekcije">
+    </div>
+    <br>
+    <button type="submit" (click)="dodajProjekciju()"  class="btn btn-light">Dodaj</button>
+    <button type="submit" style="margin-left: 10px" (click)="prikaziDodavanje=false" class="btn btn-light">Odustani</button>
+
+  </form>
+
+
+
+</div>
+-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 *ngIf="odabranaProjekcija != null && prikaziUredjivanje"
+             class="modal-title" id="editLabel">Uređivanje podataka o projekciji ID {{this.odabranaProjekcija.id}}</h5>
+        <button *ngIf="odabranaProjekcija != null && prikaziUredjivanje"  type="button" class="btn-close" data-bs-dismiss="modal"
+        [disabled]="odabranaProjekcija.dan==''"        aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="odabranaProjekcija != null && prikaziUredjivanje" >
+          <form>
+            <div class="form-group">
+              <label for="dan">Dan</label>
+              <input [(ngModel)]="odabranaProjekcija.dan" [ngModelOptions]="{standalone: true}"
+                     type="text" class="form-control" required name="dan" #dan="ngModel" id="danE"  >
+              <div *ngIf="dan.invalid && (dan.dirty || dan.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="dan.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="prezimeEdit">Datum i vrijeme</label>
+              <input  [(ngModel)]="odabranaProjekcija.vrijemePrikazivanja" [ngModelOptions]="{standalone: true}"
+                      type="datetime-local" required class="form-control" id="prezimeEdit"  >
+            </div>
+            <div class="form-group">
+              <label >ID filma</label>
+              <input [(ngModel)]="odabranaProjekcija.filmId" [ngModelOptions]="{standalone: true}"
+                     type="number" class="form-control"  >
+
+            </div>
+            <div class="form-group">
+              <label >ID vrste projekcije</label>
+              <input [(ngModel)]="odabranaProjekcija.vrstaProjekcijeId" [ngModelOptions]="{standalone: true}"
+                     type="number" class="form-control"  >
+
+            </div>
+
+
+            <br>
+            <button type="button" id="editBtn" [disabled]="!dan.valid" class="btn btn-primary " (click)="snimi()" data-bs-dismiss="modal">Sačuvaj</button>
+
+
+
+          </form>
+
+        </div >
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!--
+<div *ngIf="odabranaProjekcija != null && prikaziUredjivanje" class="uzad">
+  <h1>Uređivanje projekcije</h1>
+  <form>
+    <div class="form-group">
+      <label for="imeE">Dan</label>
+      <input [(ngModel)]="odabranaProjekcija.dan" [ngModelOptions]="{standalone: true}"
+             type="text" class="form-control" id="imeE"  >
+    </div>
+    <div class="form-group">
+      <label for="prezimeE">Datum i vrijeme</label>
+      <input  [(ngModel)]="odabranaProjekcija.vrijemePrikazivanja" [ngModelOptions]="{standalone: true}"
+              type="text" class="form-control" id="prezimeE"  >
+    </div>
+    <div class="form-group">
+      <label >ID vrste projekcije</label>
+      <input [(ngModel)]="odabranaProjekcija.vrstaProjekcijeId" [ngModelOptions]="{standalone: true}"
+             type="number" class="form-control"  >
+
+    </div>
+    <div class="form-group">
+      <label >ID filma</label>
+      <input [(ngModel)]="odabranaProjekcija.filmId" [ngModelOptions]="{standalone: true}"
+             type="number" class="form-control"  >
+
+    </div>
+
+    <br>
+    <button type="submit" (click)="snimi()" class="btn btn-light">Sačuvaj</button>
+    <button type="submit" style="margin-left: 10px" (click)="prikaziUredjivanje=false" class="btn btn-light">Odustani</button>
+
+  </form>
+
+</div>
+-->

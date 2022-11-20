@@ -1,0 +1,42 @@
+<div class="manage-nav container-fluid w-100 h-100 p-0 m-0 d-flex justify-content-center align-content-center bg-dark bg-opacity-25">
+  <div class="item h-100 text-center d-flex justify-content-center align-items-center pe-1 ps-1">
+    <p routerLink="Management/Worker" class="text-light mt-2 fw-bold">Upravljanje radnicima</p>
+  </div>
+
+  <div class="item h-100 text-center d-flex justify-content-center align-items-center  pe-1 ps-1">
+    <p routerLink="Management/Users" class="text-light mt-2 fw-bold">Upravljanje korisnicima</p>
+  </div>
+
+  <div class="item h-100 text-center d-flex justify-content-center align-items-center  pe-1 ps-1">
+    <p routerLink="Film" class="text-light mt-2 fw-bold">Upravljanje filmovima</p>
+  </div>
+  <div class="item h-100 text-center d-flex justify-content-center align-items-center  pe-1 ps-1">
+    <p routerLink="DetaljiFilma" class="text-light mt-2 fw-bold">Upravljanje detaljima filma</p>
+  </div>
+  <div class="item h-100 text-center d-flex justify-content-center align-items-center  pe-1 ps-1">
+    <p routerLink="Glumci" class="text-light mt-2 fw-bold">Upravljanje glumcima</p>
+  </div>
+
+  <div class="item h-100 text-center d-flex justify-content-center align-items-center  pe-1 ps-1">
+    <p routerLink="Projekcija" class="text-light mt-2 fw-bold">Upravljanje projekcijama</p>
+  </div>
+
+  <div class="item h-100 text-center d-flex justify-content-center align-items-center  pe-1 ps-1">
+    <p routerLink="Ponude" class="text-light mt-2 fw-bold">Upravljanje ponudama</p>
+  </div>
+
+  <div class="item h-100 text-center d-flex justify-content-center align-items-center  pe-1 ps-1">
+    <p routerLink="Management/Statistics" class="text-light mt-2 fw-bold">Statistika</p>
+  </div>
+
+  <div class="item h-100 text-center d-flex justify-content-center align-items-center  pe-1 ps-1">
+    <p  (click)="goToClient()" class="text-light mt-2 fw-bold">Idi na klijent</p>
+  </div>
+
+  <div *ngIf="(isLoggedIn$ | async)==false" #NotLoged class="ms-5 item h-100 text-center d-flex justify-content-center align-items-center bg-dark bg-opacity-25  pe-1 ps-1">
+    <p routerLink="Management/Login" class="text-light mt-2 fw-bold">Login</p>
+  </div>
+  <div *ngIf="(isLoggedIn$ | async)==true" #Loged class=" ms-5 item h-100 text-center d-flex justify-content-center align-items-center bg-dark bg-opacity-25 pe-1 ps-1">
+    <p (click)="logout()" class="text-light mt-2 fw-bold">Logout</p>
+  </div>
+</div>

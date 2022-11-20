@@ -1,0 +1,13 @@
+<div class="w-100 h-100 bg-dark bg-opacity-50 d-flex p-0 m-0"  >
+  <button class="nav-item btn rounded-0 btn-light text-dark fw-bold fs-5 active" routerLink="cinehome"><i class="fa fa-home  me-2"></i>Početna stranica</button>
+  <button class="nav-item btn rounded-0 text-light fw-bold  fs-5" routerLink="movies"><i class="fa fa-ticket  me-2"></i>Filmovi</button>
+  <button class="nav-item btn rounded-0 text-light fw-bold  fs-5" ><img style="width:25px; height: 25px; " src="../../../../assets/reshot-icon-popcorn-CZNY72JMUK.svg"/>Ponude kina</button>
+  <button class="nav-item btn rounded-0 text-light fw-bold  fs-5"><i class="fa fa-info  me-2"></i>Podrška</button>
+  <div class="ms-auto h-100" *ngIf="(isLoggedIn$ | async)==false" #NotLoged>
+    <button class="auth-btn btn bg-dark rounded-0 text-light bg-opacity-25 fw-bold login fs-5  h-100"   routerLink="Login">Login</button>
+    <button class="auth-btn btn bg-info  rounded-0 text-light bg-opacity-25 fw-bold register fs-5  h-100" routerLink="Register">Registracija</button>
+  </div>
+  <div class="ms-auto h-100" *ngIf="(isLoggedIn$ | async)==true" #Loged>
+    <button class="auth-btn btn btn-info  rounded-0 text-light fw-bold bg-opacity-25 register fs-5  h-100" routerLink="/" routerLink="/" (click)="logout()">Logout</button>
+  </div>
+</div>

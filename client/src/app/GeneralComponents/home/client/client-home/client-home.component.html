@@ -1,0 +1,39 @@
+
+  <div class="mid w-100 h-100 col-12 flex-column p-0 m-0 d-flex justify-content-center align-items-center" style="background-color:#E3D972">
+
+    <div class="top w-100  p-0 m-0 d-flex justify-content-center align-items-center"  style="height: 60%; background-color:#E3D972">
+      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner img-fluid" >
+          <img src="{{currentBanner}}" style="height:550px" class="img-fluid  rounded-3" alt="...">
+        </div>
+        <button class="carousel-control-prev" (click)="previous()" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden" >Previous</span>
+        </button>
+        <button class="carousel-control-next" (click)="Next()" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden" >Next</span>
+        </button>
+        </div>
+        <div class="w-50  p-0 m-0 position-absolute bg-dark bg-opacity-25 d-flex justify-content-center align-items-center  align-self-end" style="height: 15%;">
+          <h1 class="text-white p-0 m-0">{{bannerText}}</h1>
+        </div>
+    </div>
+
+    <div class="bottom  w-100  p-0 m-0 d-flex justify-content-center align-items-center scroll-vertical" style="height: 40%; background-color: #E3D972;">
+      <div class="col-2 m-1 border d-flex justify-content-center align-items-cneter flex-column" *ngFor="let film of filmovi;index as i" style="height: 90%;"  [routerLink]="['/movie', film.id]">
+
+        <div class="card bg-dark text-light col-12 h-100 d-flex align-items-center justify-content-center" [routerLink]="['/movie', film.id]" style="overflow: hidden;"  >
+          <!-- <img class="card-img-top" src={{film?.slika}} alt="Card image cap"> -->
+          <!--<app-film-preview *ngIf="display" [data]="film.video" [id]="film.id.toString()"></app-film-preview> -->
+          <div class="card-body col-12 w-100 d-flex align-items-center justify-content-center flex-column" [ngStyle]="{
+            'background':'url(' + film.slikaUrl + ')'}" >
+            <div class="mt-auto float-end bg-dark w-100 bg-opacity-25 p-0 m-0">
+              <p class="card-title fw-bold fs-4">{{film?.naziv}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>

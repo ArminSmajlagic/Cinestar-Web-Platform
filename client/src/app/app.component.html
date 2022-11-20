@@ -1,0 +1,38 @@
+<div class="container-fluid w-100 h-100 p-0 m-0 d-flex flex-column "  [style.background]="client?'#E3D972':'linear-gradient(to right,rgb(82, 82, 235),rgb(87, 160, 202))'">
+
+  <div class="container-fluid w-100  p-0 m-0" style="height:50px!important">
+    <app-management-navigation *ngIf="management"></app-management-navigation>
+    <app-client-nav *ngIf="!management"></app-client-nav>
+  </div>
+
+  <div class="container-fluid w-100 p-0 m-0 " [class.d-flex]="!management" [class.flex-row]="!management" [style.height]="auth?'unset':'94%'" >
+
+    <div class="left h-100 col-2  bg-warning p-0 m-0 d-flex flex-column justify-content-center align-items-center" *ngIf="!management && !auth">
+      <div class="h-100">
+        <img class="h-100" src="../assets/banner.png" alt="">
+    </div>
+    </div>
+  <div  [class.col-8]="!management" [class.scroll]="client" [class.col-12]="auth" class="h-100 ms-3 me-3" [style.background]="client?'#E3D972':'linear-gradient(to right,rgb(82, 82, 235),rgb(87, 160, 202))'">
+    <router-outlet></router-outlet>
+  </div>
+
+    <div class="left h-100 col-2 bg-warning p-0 m-0 d-flex flex-column justify-content-center align-items-center" *ngIf="!management && !auth">
+      <div class="h-100">
+          <img class="h-100" src="../assets/banner.png" alt="">
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- <div class="container-fluid w-100 h-100 p-0 m-0 d-flex flex-column ">
+
+  <div class="container-fluid w-100  p-0 m-0" style="height:6%">
+    <app-management-navigation ></app-management-navigation>
+  </div>
+  <div class="container-fluid w-100 p-0 m-0 "  style="height:94%">
+    <router-outlet></router-outlet>
+  </div>
+</div> -->
+

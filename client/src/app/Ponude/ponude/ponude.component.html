@@ -1,0 +1,271 @@
+<H1>Ponude</H1>
+
+
+<table class="table table-hover table-dark uzad">
+  <tr >
+    <th>ID</th>
+    <th>Vrsta ponude</th>
+    <th>Pocetak ponude</th>
+    <th>Kraj ponude</th>
+    <th>Radnik ID</th>
+    <th>Akcija</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let s of getPonudePodaci()">
+    <td>{{s.id}}</td>
+    <td>{{s.vrsta_ponude }}</td>
+    <td>{{s.pocetakPonude | date}}</td>
+    <td >{{s.krajPonude| date}}</td>
+    <td >{{s.radnikId}}</td>
+
+    <td>
+      <button (click)="obrisiPonudu(s)"  class="btn btn-light">Obrisi</button>
+      <button data-bs-toggle="modal" data-bs-target="#edit"  class="btn btn-light odmakni" (click)="uredi(s)">Uredi</button>
+      <button   class="btn btn-light odmakni" (click)="ucitajProizvode(s)" >Proizvodi</button>
+
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<button class="btn btn-light" id="dodajButton" data-bs-toggle="modal" data-bs-target="#add" (click)="dodavanje()" >Nova ponuda</button>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLabel">Dodavanje ponude</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="prikaziDodavanje">
+          <form>
+            <div class="form-group">
+              <label for="vrsta">Vrsta ponude</label>
+              <input [(ngModel)]="add.vrsta_ponude" [ngModelOptions]="{standalone: true}"
+              required name="vrsta"   id="vrsta"   #vrsta="ngModel"
+                     type="text" class="form-control"   placeholder="Unesite vrstu ponude(novogodišnja,božićna...)">
+              <div *ngIf="vrsta.invalid && (vrsta.dirty || vrsta.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="vrsta.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="pocetak">Datum pocetka ponude</label>
+              <input  [(ngModel)]="add.pocetakPonude" [ngModelOptions]="{standalone: true}"
+                      required name="pocetak"   id="pocetak"   #pocetak="ngModel"
+                      type="datetime-local" class="form-control"   placeholder="Unesite datum pocetka ponude">
+              <div *ngIf="pocetak.invalid && (pocetak.dirty || pocetak.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="pocetak.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label >Trajanje ponude</label>
+              <input type="number" [(ngModel)]="add.trajanjePonude" [ngModelOptions]="{standalone: true}"
+                     required name="trajanje"   id="trajanje"   #trajanje="ngModel"
+                     class="form-control"   placeholder="Unesite trajanje ponude u danima">
+              <div *ngIf="trajanje.invalid && (trajanje.dirty || trajanje.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="trajanje.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label >ID radnika</label>
+              <input type="number" [(ngModel)]="add.radnikId" [ngModelOptions]="{standalone: true}"
+                     required name="radnik"   id="radnik"   #radnik="ngModel"
+                     class="form-control"   placeholder="Unesite ID radnika">
+              <div *ngIf="radnik.invalid && (radnik.dirty || radnik.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="radnik.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+            <br>
+            <button [disabled]="!vrsta.valid || !pocetak.valid || !radnik.valid || !trajanje.valid"
+              type="submit" (click)="DodajPonudu()" id="addBtn" data-bs-dismiss="modal" class="btn btn-primary">Dodaj</button>
+
+
+          </form>
+
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<div *ngIf="prikaziDodavanje" class="uzad">
+  <h1>Dodavanje ponude</h1>
+  <form>
+    <div class="form-group">
+      <label >Vrsta ponude</label>
+      <input [(ngModel)]="add.vrsta_ponude" [ngModelOptions]="{standalone: true}"
+             type="text" class="form-control"   placeholder="Unesite vrstu ponude">
+    </div>
+    <div class="form-group">
+      <label >Datum pocetka ponude</label>
+      <input  [(ngModel)]="add.pocetakPonude" [ngModelOptions]="{standalone: true}"
+              type="datetime-local" class="form-control"   placeholder="Unesite datum pocetka ponude">
+    </div>
+
+
+    <div class="form-group">
+      <label >Trajanje ponude</label>
+      <input type="number" [(ngModel)]="add.trajanjePonude" [ngModelOptions]="{standalone: true}"
+             class="form-control"   placeholder="Unesite trajanje ponude u danima">
+    </div>
+    <div class="form-group">
+      <label >ID radnika</label>
+      <input type="number" [(ngModel)]="add.radnikId" [ngModelOptions]="{standalone: true}"
+             class="form-control"   placeholder="Unesite ID radnika">
+    </div>
+    <br>
+    <button type="submit" (click)="DodajPonudu()" class="btn btn-light">Dodaj</button>
+    <button type="submit" style="margin-left: 10px" (click)="prikaziDodavanje=false" class="btn btn-light">Odustani</button>
+
+  </form>
+
+
+
+</div>
+-->
+
+
+<!--<table *ngIf="prikaziStavke" class="table table-hover table-dark uzad">
+  <tr >
+    <th>ID</th>
+    <th>Vrsta ponude</th>
+    <th>Pocetak ponude</th>
+    <th>Kraj ponude</th>
+    <th>Radnik ID</th>
+    <th>Akcija</th
+  </tr>
+  <tbody>
+  <tr *ngFor="let s of getStavkePodaci()">
+    <td>{{s.id}}</td>
+    <td>{{s.vrsta_ponude}}</td>
+    <td>{{s.pocetakPonude}}</td>
+    <td >{{s.krajPonude}}</td>
+    <td >{{s.radnikId}}</td>
+
+    <td>
+      <button (click)="obrisiPonudu(s)"  class="btn btn-light">Obrisi</button>
+      <button   class="btn btn-light odmakni" >Uredi</button>
+      <button   class="btn btn-light odmakni" (click)="UcitajStavke()" >Stavke</button>
+
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+-->
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 *ngIf="prikaziUredjivanje" class="modal-title" id="editLabel">Uredjivanje ponude ID {{odabranaPonuda.id}}</h5>
+        <button *ngIf="prikaziUredjivanje"
+                [disabled]="odabranaPonuda.vrsta_ponude=='' || odabranaPonuda.trajanjePonude==null || odabranaPonuda.radnikId==null"
+          type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="prikaziUredjivanje">
+          <form>
+            <div class="form-group">
+              <label for="vrstaE">Vrsta ponude</label>
+              <input [(ngModel)]="odabranaPonuda.vrsta_ponude" [ngModelOptions]="{standalone: true}"
+                     required name="vrstaE"   id="vrstaE"   #vrstaE="ngModel"
+                     type="text" class="form-control"   placeholder="Unesite vrstu ponude(novogodišnja,božićna...)">
+              <div *ngIf="vrstaE.invalid && (vrstaE.dirty || vrstaE.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="vrstaE.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="pocetakE">Datum pocetka ponude</label>
+              <input  [(ngModel)]="odabranaPonuda.pocetakPonude" [ngModelOptions]="{standalone: true}"
+                      required name="pocetakE"   id="pocetakE"   #pocetakE="ngModel"
+                      type="datetime-local" class="form-control"   placeholder="Unesite datum pocetka ponude">
+              <div *ngIf="pocetakE.invalid && (pocetakE.dirty || pocetakE.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="pocetakE.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="trajanjeE">Trajanje ponude</label>
+              <input type="number" [(ngModel)]="odabranaPonuda.trajanjePonude" [ngModelOptions]="{standalone: true}"
+                     required name="trajanjeE"   id="trajanjeE"   #trajanjeE="ngModel"
+                     class="form-control"   placeholder="Unesite trajanje ponude u danima">
+              <div *ngIf="trajanjeE.invalid && (trajanjeE.dirty || trajanjeE.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="trajanjeE.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label >ID radnika</label>
+              <input type="number" [(ngModel)]="odabranaPonuda.radnikId" [ngModelOptions]="{standalone: true}"
+                     required name="radnikE"   id="radnikE"   #radnikE="ngModel"
+                     class="form-control"   placeholder="Unesite ID radnika">
+              <div *ngIf="radnikE.invalid && (radnikE.dirty || radnikE.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="radnikE.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+            <br>
+            <button [disabled]="!vrstaE.valid || !pocetakE.valid || !radnikE.valid || !trajanjeE.valid"
+                    type="submit" (click)="snimi()" id="EditBtn" data-bs-dismiss="modal" class="btn btn-primary">Sačuvaj</button>
+
+
+          </form>
+
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>

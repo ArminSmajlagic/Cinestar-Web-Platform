@@ -1,0 +1,71 @@
+<!-- <div class="modal fade rounded-3" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="modalLogin" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="border-top-left-radius:100px;border-top-right-radius: 100px; border-bottom-left-radius: 100px; border-bottom-right-radius: 100px;width: 300px;">
+    <div class="modal-content"  style="border-top-left-radius:100px;border-top-right-radius: 100px; border-bottom-left-radius: 100px; border-bottom-right-radius: 100px; width: 430px;" >
+      <div class="p-3 d-flex justify-content-between align-items-center"style="background:#217dbe;border-top-left-radius:15px;border-top-right-radius: 15px;">
+        <p>.</p>
+        <h5 class="modal-title text-center center" id="modalLoginTitle">Prijava</h5>
+        <button type="button" class="close border-0 fs-3" style="background: #217dbe;" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="login(loginForma)" class="form-group d-flex flex-column justify-content-center align-items-center" #loginForma="ngForm">
+        <div class="col-8 m-0 p-0">
+          <label for="username" style="color:#999999;font-size: 13px;">Unesite korisnicko ime:</label>
+          <input required minlength="4" maxlength="10" #username="ngModel"[style.border]="!username.valid && username.touched ? '1px solid red!important' : ''" ngModel type="text" class="form-control border border-1 border-dark" name="username" style="background: black;font-size: 20px;">
+          <p class="valid-txt" style="color: red;" *ngIf="!username.valid && username.touched">Obavezno polje</p>
+          <p style="color:#999999;font-size: 13px;">Molimo unesite korisničko ime malim slovima.</p>
+
+        </div>
+        <div class="col-8 m-0 p-0">
+          <label for="password" style="color:#999999;font-size: 13px;">Unesite password:</label>
+          <input minlength="5" maxlength="15" required #password="ngModel"[style.border]="!password.valid && password.touched ? '1px solid red!important' : ''" ngModel type="password" class="form-control border border-1 border-dark" name="password" style="background: black;font-size: 20px;">
+          <p class="valid-txt" style="color: red;" *ngIf="!password.valid && password.touched">Obavezno polje</p>
+          <p style="color:#999999;font-size: 13px;">Vaša lozinka može sadržavati velika i mala slova, te brojeve. Obratite pažnju na format unešenih podataka.</p>
+        </div>
+        <p class=""><a href="#" style="color:white;font-size: 13px;text-decoration: underline;">Zaboravili ste lozinku?</a></p>
+        <button type="submit" class="btn form-control col-8"style="background:#217dbe;font-size:18px;color:black" [disabled]="!loginForma.valid">PRIJAVA</button>
+        <p class="mt-4 text-center" style="color:#999999;font-size: 13px;">Imate problema pri prijavi ili registraciji ? Kontaktirajte nas za pomoć: Tel: +382 12 345 678 Email: RS1_FIT@gmail.com</p>
+      </form>
+      </div>
+
+    </div>
+  </div>
+</div> -->
+
+<div class="login cotainer-fluid w-100 h-100 d-flex justify-content-center align-items-center pt-5" >
+  <form #loginForma="ngForm" class="d-flex flex-column col-9 justify-content-center align-items-center " (submit)="login(loginForma)">
+    <div class="login-panel d-flex flex-column justify-content-center align-items-center col-xs-2 col-sm-10 col-md-8 col-lg-6 col-xl-6 col-xxl-4 ps-5 pe-5 p-3 border border-light rounded p-0">
+      <div class="shield  border border-2 border-light-2 rounded text-center mb-3 mt-3 p-3">
+        <h3 class="text-light tag">Dobrodošli u</h3>
+       <h3 class="text-light tag">Cinestar</h3>
+       </div>
+      <div class="col-10 d-flex flex-column justify-content-center align-items-center">
+      <label  for="username" class="p-1 fs-5 text-light fw-bold ">Korisnicko ime</label>
+      <input required minlength="5" maxlength="16" #username="ngModel"[class]="!username.valid && username.touched ? 'border-danger' : 'border-light'" ngModel type="text" class="form-control border border-1 bg-light text-light bg-opacity-25" name="username"  style="font-size: 20px;">
+      <p class="valid-txt" style="color: red;" *ngIf="!username.valid && username.touched">Obavezno polje</p>
+      <p class="text-center" style="color:#ffffff;font-size: 13px;">Molimo unesite korisničko ime malim slovim, duljine min. 5 karaktera.</p>
+      <label  for="password" class="p-1 fs-5 text-light fw-bold">Lozinka</label>
+      <div class="col-12 d-flex">
+      <input required minlength="5" maxlength="16" #password="ngModel"[class]="!password.valid && password.touched ? 'border-danger' : 'border-light'" ngModel [type]="passcode" class="form-control border col-12 border-1 bg-light text-light bg-opacity-25" name="password" style="font-size: 20px;">
+      <i *ngIf="passcode=='text'" class="fa fa-eye fs-5 mt-3 ms-1  text-white" (click)="passwordToggle()"></i>
+      <i *ngIf="passcode=='password'" class="fa fa-eye-slash fs-5 mt-3 ms-1  text-white" (click)="passwordToggle()"></i>
+    </div>
+      <p class="valid-txt" style="color: red;" *ngIf="!password.valid && password.touched">Obavezno polje</p>
+      <p class="text-center" style="color:#ffffff;font-size: 13px;">Vaša lozinka može sadržavati velika i mala slova, te brojeve i znakove.</p>
+
+      <p class="text-danger text-center" style="font-size: 18px;">{{error}}</p>
+
+      <div class="combo mt-3 text-center mb-2 d-flex flex-row">
+       <input type="checkbox" class="form-check border-dark bg-light text-white" >
+       <label for="" class="form-check-label p-1 text-light fw-bold " style="font-size: 14px;">Ostanite prijavljeni</label>
+      </div>
+      <input type="submit" value="Login" [disabled]="!password.valid || !username.valid" class="btn bg-light bg-opacity-25 fw-bold text-white mt-3 mb-3" >
+      <p class="mt-4 text-center" style="color:#ffffff;font-size: 13px;">Imate problema pri prijavi ili registraciji ? Kontaktirajte nas za pomoć: Tel: +382 12 345 678 Email: RS1_FIT@gmail.com</p>
+    </div>
+    </div>
+  </form>
+</div>
+
+
+

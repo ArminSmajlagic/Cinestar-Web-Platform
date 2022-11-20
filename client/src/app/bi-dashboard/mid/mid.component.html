@@ -1,0 +1,34 @@
+<!-- <div class="container-fluid h-100 w-100 d-flex flex-column p-0 m-0 bg-dark bg-opacity-25">
+  <div class="container col-12 h-50 ">
+    <div class="canvas  col-12 h-100 w-100 d-flex flex-column justify-content-center align-items-center">
+      <p-chart type="bar" class=" align-self-center h-75 w-75" [data]="data" ></p-chart>
+      <button type="button" class="rounded border-0 p-2 bg-dark text-light fw-bold" pButton (click)="update($event)">Update</button>
+
+    </div>
+  </div>
+  <div class="container col-12 h-50 ">
+    <div class="canvas col-12 h-100 w-100 d-flex justify-content-center align-items-center">
+      <div class="col-6   h-100 d-flex justify-content-center align-items-center">
+       <p-chart type="line" [data]="data" (onDataSelect)="selectData($event)"></p-chart>
+      </div>
+      <div class="col-6  h-100 d-flex justify-content-center align-items-center">
+        <p-chart type="pie"  class=" w-100 h-100" [data]="data"></p-chart>
+
+      </div>
+     </div>
+  </div>
+</div> -->
+<!-- <button class="btn btn-dark text-light" (click)="update()">Update</button> -->
+  <div class="canvas col-12 h-100 w-100 d-flex justify-content-center align-items-center"  >
+    <div id="chart1_parent" class="h-100 ms-5 d-flex justify-content-center align-items-center mt-5 " style="width:30%">
+      <!-- <p-chart #chart1 type="bar"  class=" w-100 h-100 text-light" style="color: white!important;" [data]="data1" [options]="data1Options"></p-chart> -->
+      <canvas id="canvas1">{{chart1}}</canvas>
+    </div>
+    <div id="chart2_parent" class="h-100 d-flex justify-content-center align-items-center mt-5" style="width:30%">
+      <canvas id="canvas2">{{chart2}}</canvas>
+    </div>
+    <div id="chart3_parent" class="h-100 me-5 d-flex justify-content-center align-items-center mt-5" style="width:30%">
+      <canvas id="canvas3">{{chart3}}</canvas>
+    </div>
+   </div>
+

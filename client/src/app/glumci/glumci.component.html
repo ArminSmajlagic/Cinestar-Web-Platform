@@ -1,0 +1,237 @@
+<H1>Glumci</H1>
+
+
+
+<p>
+
+  <input type="text" class="form-control uzadd"  [(ngModel)]="ime" placeholder="Traži glumce po imenu ili prezimenu">
+</p>
+<table class="table table-hover table-dark uzad">
+  <tr >
+    <th>ID</th>
+    <th>Ime</th>
+    <th>Prezime</th>
+    <th>Datum rodjenja</th>
+    <th>Akcija</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let s of getGlumacPodaci()">
+    <td>{{s.id}}</td>
+    <td>{{s.ime}}</td>
+    <td>{{s.prezime}}</td>
+    <td>{{ s.datumRodjenja | date }} </td>
+    <td>
+      <button (click)="obrisiGlumca(s)" class="btn btn-light">Obrisi</button>
+      <button  (click)="urediGlumca(s)" class="btn btn-light odmakni" data-bs-toggle="modal" data-bs-target="#glumacEdit" >Uredi</button>
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+
+<!-- Modal dodavanje glumca-->
+<div class="modal fade" id="glumacAdd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="glumacAddLabel">Dodavanje novog glumca</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="prikaziDodavanje">
+          <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="ime">Ime glumca</label>
+              <input [(ngModel)]="add._ime" [ngModelOptions]="{standalone: true}"
+                     type="text" class="form-control" id="ime" name="ime" required #ime="ngModel" placeholder="Unesite ime glumca">
+              <div *ngIf="ime.invalid && (ime.dirty || ime.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="ime.errors?.['required']">
+                  *Ime je obavezno.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="prezime">Prezime glumca</label>
+              <input  [(ngModel)]="add._prezime" [ngModelOptions]="{standalone: true}"
+                      type="text" class="form-control" id="prezime" name="prezime" required #prezime="ngModel"
+                      placeholder="Unesite prezime glumca">
+              <div *ngIf="prezime.invalid && (prezime.dirty || prezime.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="prezime.errors?.['required']">
+                  *Prezime je obavezno.
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="datumRodj">Datum Rodjenja glumca</label>
+              <input type="date" required #datumRodj="ngModel"  [(ngModel)]="add._datumRodj" [ngModelOptions]="{standalone: true}"
+                     class="form-control" id="datumRodj"  name="datumRodj" placeholder="Unesite datum rodjenja glumca">
+              <div *ngIf="datumRodj.invalid && (datumRodj.dirty || datumRodj.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="datumRodj.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <br>
+
+
+          </form>
+
+
+          <button [disabled]="!ime.valid || !prezime.valid || !datumRodj.valid"
+                  type="button" class="btn btn-primary" id="dodajButton2" (click)="DodajGlumca()" data-bs-dismiss="modal">Dodaj</button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-light" id="dodajButton"  type="button"
+        data-bs-toggle="modal" data-bs-target="#glumacAdd" (click)="dodavanje()" >Novi glumac</button>
+
+<!--
+<div *ngIf="prikaziDodavanje" class="uzad">
+  <h1>Dodavanje glumca</h1>
+  <form>
+    <div class="form-group">
+      <label for="ime">Ime glumca</label>
+      <input [(ngModel)]="add._ime" [ngModelOptions]="{standalone: true}"
+             type="text" class="form-control" id="ime"  placeholder="Unesite ime glumca">
+    </div>
+    <div class="form-group">
+      <label for="prezime">Prezime glumca</label>
+      <input  [(ngModel)]="add._prezime" [ngModelOptions]="{standalone: true}"
+              type="text" class="form-control" id="prezime"  placeholder="Unesite prezime glumca">
+    </div>
+
+
+    <div class="form-group">
+      <label for="datumRodj">Datum Rodjenja glumca</label>
+      <input type="date" [(ngModel)]="add._datumRodj" [ngModelOptions]="{standalone: true}"
+             class="form-control" id="datumRodj"  placeholder="Unesite datum rodjenja glumca">
+    </div>
+    <br>
+    <button type="submit" (click)="DodajGlumca()" class="btn btn-light">Dodaj</button>
+    <button type="submit" style="margin-left: 10px" (click)="prikaziDodavanje=false" class="btn btn-light">Odustani</button>
+
+  </form>
+
+
+
+</div>
+-->
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="glumacEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 *ngIf="odabraniGlumac != null && prikaziUredjivanje"
+            class="modal-title" id="glumacEditLabel">Uređivanje glumca ID {{odabraniGlumac.id}} </h5>
+        <button *ngIf="odabraniGlumac != null && prikaziUredjivanje" type="button" id="clsButton" class="btn-close" data-bs-dismiss="modal"
+               [disabled]="odabraniGlumac.ime=='' || odabraniGlumac.prezime==''"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="odabraniGlumac != null && prikaziUredjivanje" >
+
+          <form>
+            <div class="form-group">
+              <label for="imeE">Ime glumca</label>
+              <input [(ngModel)]="odabraniGlumac.ime" [ngModelOptions]="{standalone: true}"
+               required name="imeE" #imeE="ngModel"     type="text" class="form-control" id="imeE"  >
+              <div *ngIf="imeE.invalid && (imeE.dirty || imeE.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="imeE.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="prezimeE">Prezime glumca</label>
+              <input  [(ngModel)]="odabraniGlumac.prezime" [ngModelOptions]="{standalone: true}"
+                required name="prezimeE"   #prezimeE="ngModel"   type="text" class="form-control" id="prezimeE"  >
+              <div *ngIf="prezimeE.invalid && (prezimeE.dirty || prezimeE.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="prezimeE.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="datRodjE">Datum Rodjenja glumca</label>
+              <input [(ngModel)]="odabraniGlumac.datumRodjenja" [ngModelOptions]="{standalone: true}"
+                 required  name="datRodjE" #datRodjE="ngModel"  type="date" class="form-control" id="datRodjE" >
+              <div *ngIf="datRodjE.invalid && (datRodjE.dirty || datRodjE.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="datRodjE.errors?.['required']">
+                  *Polje je obavezno.
+                </div>
+              </div>
+            </div>
+
+            <br>
+
+
+
+          </form>
+          <button type="button" [disabled]="!imeE.valid || !prezimeE.valid ||
+!datRodjE.valid" class="btn btn-primary" data-bs-dismiss="modal" (click)="snimi()">Close</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<div *ngIf="odabraniGlumac != null && prikaziUredjivanje" class="uzad">
+  <h1>Uređivanje glumca</h1>
+  <form>
+    <div class="form-group">
+      <label for="imeE">Ime glumca</label>
+      <input [(ngModel)]="odabraniGlumac.ime" [ngModelOptions]="{standalone: true}"
+             type="text" class="form-control" id="imeE"  >
+    </div>
+    <div class="form-group">
+      <label for="prezimeE">Prezime glumca</label>
+      <input  [(ngModel)]="odabraniGlumac.prezime" [ngModelOptions]="{standalone: true}"
+              type="text" class="form-control" id="prezimeE"  >
+    </div>
+    <div class="form-group">
+      <label for="datRodjE">Datum Rodjenja glumca</label>
+      <input [(ngModel)]="odabraniGlumac.datumRodjenja" [ngModelOptions]="{standalone: true}"
+             type="date" class="form-control" id="datRodjE" >
+
+    </div>
+
+    <br>
+    <button type="submit" (click)="snimi()" class="btn btn-light">Sačuvaj</button>
+    <button type="submit" style="margin-left: 10px" (click)="prikaziUredjivanje=false" class="btn btn-light">Odustani</button>
+
+  </form>
+
+</div>
+-->

@@ -1,0 +1,21 @@
+<div id="wrapper">
+  <div  class="film" *ngFor="let s of filmPodaci">
+    <div class="slika">
+      <img style="height:100%;width:100%;"
+           src="{{s.film.slikaUrl}}">
+    </div>
+    <div class="detalji">
+      <span class="naziv">{{s.film.naziv}}</span><br><br><br><br>
+      <button type="button" class="btn btn-light" (click)="openDetails(s)">Pogledaj detalje filma i dostupne projekcije</button>
+      <!--<span>Žanr: {{s.film.zanr}}</span><br>
+      <span>Trajanje: {{s.film.detaljiFilma?.trajanje}}</span><br>
+      <span>Datum objave: {{s.film.detaljiFilma?.datumObjave | date}}</span><br>
+      <span >Glumci: <span *ngFor="let g of s.glumci">{{g.ime}} {{g.prezime}}  </span></span><br>-->
+      <!--<div *ngFor="let p of s.projekcije" class="projekcije">
+        <span> {{p.dan}}<br>{{p.vrijemePrikazivanja | date:'longDate'}} u {{p.vrijemePrikazivanja | date:'shortTime'}}</span>
+      </div>-->
+      <!--<button (click)="prikaziJos(s.film.id)" class="btn btn-dark">Još detalja</button>-->
+    </div>
+
+  </div>
+</div>

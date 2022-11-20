@@ -1,0 +1,257 @@
+<H1 *ngIf="!sviProizvodi">Proizvodi ponude ID {{this.id}}</H1>
+<H1 *ngIf="sviProizvodi">Svi proizvodi</H1>
+
+
+<table  class="table table-hover table-dark uzad">
+  <tr >
+    <th>ID</th>
+    <th>Naziv</th>
+    <th>Porcija</th>
+    <th>Cijena</th>
+    <th>Slika</th>
+    <th>Akcija</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let s of getProizvodPodaci()">
+    <td>{{s.id}}</td>
+    <td>{{s.naziv}}</td>
+    <td>{{s.porcija}}</td>
+    <td >{{s.cijena+"KM"}}</td>
+    <td><img class="profilna-slika" src="{{s.slikaUrl}}"></td>
+
+    <td>
+      <button (click)="obrisiProizvod(s)"  class="btn btn-light">Obrisi</button>
+      <button  (click)="urediProizvod(s)" style="margin-left: 10px" class="btn btn-light" data-bs-target="#edit"
+               data-bs-toggle="modal"     >Uredi</button>
+      <!-- <button   class="btn btn-light odmakni" (click)="UcitajStavke()" >Stavke</button>-->
+
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+<button class="btn btn-light" id="nazadButton"  (click)="naPonude()">Nazad na ponude</button>
+
+<button class="btn btn-light" id="dodajButton" data-bs-toggle="modal" data-bs-target="#add"
+        (click)="this.prikaziDodavanje=true" >Novi proizvod</button>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="add" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addLabel">Dodavanje proizvoda za ponudu ID {{id}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="prikaziDodavanje" >
+          <form>
+            <div class="form-group">
+              <label for="naziv">Naziv proizvoda</label>
+              <input [(ngModel)]="add.naziv" [ngModelOptions]="{standalone: true}"
+                 id="naziv" name="naziv" #naziv="ngModel" required type="text" class="form-control"   placeholder="Unesite naziv proizvoda">
+              <div *ngIf="naziv.invalid && (naziv.dirty || naziv.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="naziv.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="porcija">Porcija</label>
+              <input  [(ngModel)]="add.porcija" [ngModelOptions]="{standalone: true}" id="porcija" name="porcija"
+              #porcija="ngModel"  required      type="text" class="form-control"   placeholder="Unesite velicinu porcije">
+              <div *ngIf="porcija.invalid && (porcija.dirty || porcija.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="porcija.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label >Cijena</label>
+              <input type="number" [(ngModel)]="add.cijena" [ngModelOptions]="{standalone: true}"
+               id="cijena" name="cijena" required #cijena="ngModel" class="form-control"   placeholder="Unesite cijenu">
+              <div *ngIf="cijena.invalid && (cijena.dirty || cijena.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="cijena.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="slika">Link slike</label>
+              <input  [(ngModel)]="add.slikaUrl" [ngModelOptions]="{standalone: true}"
+                      type="text" class="form-control" id="slika" >
+            </div>
+            <!--<div class="form-group">
+              <label >ID ponude</label>
+              <input type="number" [(ngModel)]="this.id" [ngModelOptions]="{standalone: true} "
+                     class="form-control"   placeholder="Nije obavezno ukoliko " disabled>
+            </div>-->
+            <br>
+            <button [disabled]="!naziv.valid || !porcija.valid || !cijena.valid"
+              data-bs-dismiss="modal" type="submit" (click)="DodajProizvod()" class="btn btn-primary addBtn">Dodaj</button>
+
+
+          </form>
+
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--
+<div *ngIf="prikaziDodavanje" class="uzad">
+  <h1>Dodavanje proizvoda</h1>
+  <form>
+    <div class="form-group">
+      <label >Naziv proizvoda</label>
+      <input [(ngModel)]="add.naziv" [ngModelOptions]="{standalone: true}"
+             type="text" class="form-control"   placeholder="Unesite naziv proizvoda">
+    </div>
+    <div class="form-group">
+      <label >Porcija</label>
+      <input  [(ngModel)]="add.porcija" [ngModelOptions]="{standalone: true}"
+              type="text" class="form-control"   placeholder="Unesite velicinu porcije">
+    </div>
+
+
+    <div class="form-group">
+      <label >Cijena</label>
+      <input type="number" [(ngModel)]="add.cijena" [ngModelOptions]="{standalone: true}"
+             class="form-control"   placeholder="Unesite cijenu">
+    </div>
+    <div class="form-group">
+      <label >ID ponude</label>
+      <input type="number" [(ngModel)]="this.id" [ngModelOptions]="{standalone: true} "
+             class="form-control"   placeholder="Nije obavezno ukoliko " disabled>
+    </div>
+    <br>
+    <button type="submit" (click)="DodajProizvod()" class="btn btn-light">Dodaj</button>
+    <button type="submit" style="margin-left: 10px" (click)="prikaziDodavanje=false" class="btn btn-light">Odustani</button>
+
+  </form>
+
+
+
+</div>
+-->
+
+
+<!-- Modal -->
+<div class="modal fade" id="edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 *ngIf="odabraniProizvod != null && prikaziUredjivanje"
+          class="modal-title" id="editLabel">Uređivanje proizvoda ID {{odabraniProizvod.id}} </h5>
+        <button  *ngIf="odabraniProizvod != null && prikaziUredjivanje" [disabled]="odabraniProizvod.naziv=='' ||
+ odabraniProizvod.porcija=='' || odabraniProizvod.cijena==null"
+                 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="odabraniProizvod != null && prikaziUredjivanje" >
+          <form>
+            <div class="form-group">
+              <label for="nazivEdit">Naziv proizvoda</label>
+              <input [(ngModel)]="odabraniProizvod.naziv" [ngModelOptions]="{standalone: true}" id="nazivEdit" name="nazivEdit"
+                required #nazivEdit="ngModel"     type="text" class="form-control">
+              <div *ngIf="nazivEdit.invalid && (nazivEdit.dirty || nazivEdit.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="nazivEdit.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="porcijaEdit">Porcija</label>
+              <input  [(ngModel)]="odabraniProizvod.porcija" [ngModelOptions]="{standalone: true}" id="porcijaEdit" name="porcijaEdit"
+              required #porcijaEdit="ngModel" type="text" class="form-control">
+              <div *ngIf="porcijaEdit.invalid && (porcijaEdit.dirty || porcijaEdit.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="porcijaEdit.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cijenaEdit">Cijena</label>
+              <input [(ngModel)]="odabraniProizvod.cijena" [ngModelOptions]="{standalone: true}" id="cijenaEdit" name="cijenaEdit"
+               required #cijenaEdit="ngModel" type="number" class="form-control">
+              <div *ngIf="cijenaEdit.invalid && (cijenaEdit.dirty || cijenaEdit.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="cijenaEdit.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="slika1">Link slike</label>
+              <input  [(ngModel)]="odabraniProizvod.slikaUrl" [ngModelOptions]="{standalone: true}"
+                      type="text" class="form-control" id="slika1" >
+            </div>
+
+            <br>
+            <button [disabled]="!nazivEdit.valid || !porcijaEdit.valid || !cijenaEdit.valid"
+                    id="editPBtn" data-bs-dismiss="modal" type="submit" (click)="snimi()" class="btn btn-primary">Sačuvaj</button>
+
+
+          </form>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--
+<div *ngIf="odabraniProizvod != null && prikaziUredjivanje" class="uzad">
+  <h1>Uređivanje proizvoda</h1>
+  <form>
+    <div class="form-group">
+      <label>Naziv proizvoda</label>
+      <input [(ngModel)]="odabraniProizvod.naziv" [ngModelOptions]="{standalone: true}"
+             type="text" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Porcija</label>
+      <input  [(ngModel)]="odabraniProizvod.porcija" [ngModelOptions]="{standalone: true}"
+              type="text" class="form-control">
+    </div>
+    <div class="form-group">
+      <label >Cijena</label>
+      <input [(ngModel)]="odabraniProizvod.cijena" [ngModelOptions]="{standalone: true}"
+             type="number" class="form-control">
+
+    </div>
+
+    <br>
+    <button type="submit" (click)="snimi()" class="btn btn-light">Sačuvaj</button>
+    <button type="submit" style="margin-left: 10px" (click)="prikaziUredjivanje=false" class="btn btn-light">Odustani</button>
+
+  </form>
+
+</div>
+-->

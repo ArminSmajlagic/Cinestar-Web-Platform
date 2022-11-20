@@ -1,0 +1,15 @@
+<div class="container-fluid w-100 h-100 p-0 m-0 col-12 d-flex flex-column align-items-center scroll" style="background-color: #D7D062;">
+  <div *ngIf="Movie" class="detalji">
+  <span>Žanr: {{Movie.film.zanr}}</span><br>
+      <span>Trajanje: {{Movie.film.detaljiFilma?.trajanje}}</span><br>
+      <span>Datum objave: {{Movie.film.detaljiFilma?.datumObjave | date}}</span><br>
+      <span >Glumci: <span *ngFor="let g of Movie.glumci">{{g.ime}} {{g.prezime}}  </span></span><br>
+
+   <div *ngIf="Movie.projekcije!=null"><br>
+     Dostupne projekcije:<br>
+     <p  *ngFor="let p of Movie.projekcije">{{p.vrijemePrikazivanja | date:'medium'}}</p>
+   </div>
+
+  </div>
+
+</div>

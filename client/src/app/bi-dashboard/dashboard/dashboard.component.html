@@ -1,0 +1,23 @@
+<div class="container-fluid d-flex flex-column w-100 h-100 p-0 m-0 parent scroll ">
+  <div class="container-fluid p-0 m-0 bg-dark bg-opacity-10" style="height: 5%!important;">
+  <app-nav></app-nav>
+</div>
+<div class="container-fluid d-flex flex-column w-100 h-100 p-0 m-0" style="height: 95%!important;">
+
+
+ <div class="container-fluid p-0 m-0" style="height: 50%!important;">
+   <app-mid ></app-mid>
+ </div>
+ <div class="container-fluid p-0 m-0 d-flex justify-content-between" style="height: 45%!important;">
+  <div class="col-3 ms-5">
+    <app-table [data]="topUsers" [dataName]="'Top Korisnici'"></app-table>
+  </div>
+  <div class="col-3 ">
+    <app-table [data]="topCinema " [dataName]="'Najposjecenija Kina'"></app-table>
+  </div>
+  <div class="col-3  me-5">
+    <app-table [data]="topMovies " [dataName]="'Najgledaniji Filmovi'"></app-table>
+  </div>
+</div>
+</div>
+</div>

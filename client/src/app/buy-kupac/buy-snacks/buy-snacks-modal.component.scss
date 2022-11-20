@@ -1,0 +1,73 @@
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: rgba($color: #e4db62, $alpha: 0.9);
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  margin-top: 4%!important;
+  border: 3px solid white!important;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.scroll {
+  height: 250px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+
+}
+.scroll-stavke{
+  height: 700px;
+
+}
+
+.scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  border-radius: 10px;
+}
+.scroll::-webkit-scrollbar-track {
+  background-color: rgba(12, 13, 15, 0.9);
+  border-radius: 10px;
+
+}
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #c3d804;
+  border-radius: 10px;
+}
+
+.receat:hover {
+  background-color: rgba($color: #edf022, $alpha: 0.6)!important;
+  transition: .4s;
+}
+
+.receat {
+  transition: .9s;
+}
+
+.btn:hover{
+  background-color: rgba($color: #000000, $alpha: 0.5)!important;
+  color: white!important;
+  transition: .9s;
+}

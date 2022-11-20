@@ -1,0 +1,15 @@
+<div class="body container-fluid d-flex flex-column justify-content-center align-items-center h-100 container-fluid">
+  <div class="container-fluid d-flex flex-column justify-content-center align-items-center h-100">
+<div class="col-xs-12 col-sm-11 col-md-9 col-lg-7 col-xxl-5 container-fluid d-flex flex-column justify-content-center align-items-center border border-light rounded mt-5" style="  background: rgba(136, 136, 136, 0.5)!important;">
+  <h2 class="text-white mt-5">Još malo :D !</h2>
+  <h3 class="text-white mt- ">Konfirmacija racuna: {{username}}</h3>
+  <h5 class="mt-5 mb-2 text-white">Potvrdite vaš mail unosom verifikacijskog koda.</h5>
+  <p class="text-white fs-4">Mail je poslan na {{email}}</p>
+  <label for="" class="text-white mt-5 mb-2">Ovdje unesite vaš kod</label>
+  <input type="text" #code class="codeValue form-control rounded w-50 bg-dark text-white bg-opacity-25" name="code" placeholder="Enter code">
+  <button (click)="confirm_mail(code.value)" class="btn bg-light bg-opacity-50 fw-bold text-white mt-4">Confirm mail</button>
+  <p class="mt-5 text-danger p-2 rounded" [class]="respons?'border border-1 border-danger':''">{{respons}}</p>
+</div>
+</div>
+
+</div>

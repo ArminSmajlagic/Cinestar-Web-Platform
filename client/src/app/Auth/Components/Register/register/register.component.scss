@@ -1,0 +1,62 @@
+.modal-content{
+  border-top-left-radius:100px;
+  border-top-right-radius: 100px;
+  border-bottom-left-radius: 100px;
+   border-bottom-right-radius: 100px;
+   width: 420px;
+}
+.head{
+  background:rgb(200, 160, 60);
+  border-top-left-radius:15px;
+  border-top-right-radius: 15px;
+}
+
+.modal-body{
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background: #191919;
+
+}
+
+.login-texts{
+  color:#999999;
+  font-size: 13px;
+}
+
+.creds{
+  color: white !important;
+  font-size: 13px;
+}
+.link{
+  color:white;
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.prijava{
+  background:rgb(200, 160, 60);
+  font-size:18px;
+  color:black
+}
+
+::placeholder {
+  font-size: 14px;
+}
+p{
+  font-size: 11px;
+}
+
+input{
+  color: white;
+}
+
+.register-panel{
+  background: rgba(0,0,0,.3)!important;
+}
+
+
+.valid-txt{
+  font-size: 11px;
+}
+
+

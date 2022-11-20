@@ -1,0 +1,25 @@
+<div class="stavka container-fluid col-11 bg-dark bg-opacity-25 m-1 d-flex p-0 m-0" style="height: 250px;">
+  <div class="col-5 h-100 bg-black">
+    <img [src]="stavka.slikaUrl" class="w-100 h-100" alt="">
+  </div>
+  <div class="col-7 h-100  d-flex flex-column justify-content-center align-items-center">
+    <form [formGroup]="stavkaForma" class="col-10 h-100 d-flex flex-column " (submit)="dodajStavkuNaRacun()">
+      <p class="text-light fw-bold fs-5">{{ stavka.naziv}}</p>
+      <div class="d-flex align-items-center  m-1 ms-1">
+       <label for="kolicina m-1"class="fw-bold">Kolicina</label>
+        <input class="form-control bg-dark bg-opacity-50 text-light" type="number" formControlName="kolicina" id="" (click)="updateCijena()">
+      </div>
+      <div class="d-flex  align-items-center  m-1">
+       <label for="porcija" class="m-1 "class="fw-bold">Porcija</label>
+       <select class="form-select  bg-dark bg-opacity-50 text-light  ms-1" formControlName="porcija" id="" (change)="updateCijena()">
+          <option [value]="porcija.value" *ngFor="let porcija of porcije" >{{porcija.name}}</option>
+       </select>
+      </div>
+      <div class="d-flex align-items-center m-1 ">
+        <label for="cijena m-1" class="fw-bold">Ukupna cijena</label>
+        <input class="form-control  bg-dark bg-opacity-25 text-light ms-1" type="text" formControlName="cijena" id="" [value]="stavkaForma.controls['cijena'].value">
+      </div>
+      <button class="btn btn-light bg-dark text-black fw-bold bg-opacity-10" type="submit">Dodaj u korpu</button>
+    </form>
+  </div>
+</div>

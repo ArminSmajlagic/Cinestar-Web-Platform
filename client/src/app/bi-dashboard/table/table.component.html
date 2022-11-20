@@ -1,0 +1,8 @@
+<div class="container-fluid h-100 w-100 bg-dark bg-opacity-25 rounded d-flex flex-column align-items-center scroll">
+  <p class="fw-bold text-light fs-1">{{name}}</p>
+  <div class="row w-100 bg-warning mt-1"*ngFor="let item of data;index as i">
+    <p class="fw-bold " *ngIf="item?.name!=undefined">{{"Username korisnika : " +item.name +" | Potrošeno novca :"+ item.total + " KM"}}</p>
+    <p class="fw-bold " *ngIf="item?.title!=undefined">{{"Naziv filma : " + item.title +" | Posjecen :"+ item.count}}</p>
+    <p class="fw-bold " *ngIf="item?.grad!=undefined">{{"Kino u grad : " + item.grad +" | Kupljeno karata :"+ item.visits}}</p>
+  </div>
+</div>

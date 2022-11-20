@@ -1,0 +1,81 @@
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  border-radius: 10px;
+  overflow-x: hidden;
+}
+body::-webkit-scrollbar-track {
+  background-color: rgba(12, 13, 15, 0.9);
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #0478d8;
+  border-radius: 10px;
+}
+
+// body{
+//   background: linear-gradient(to right,rgb(82, 82, 235),rgb(87, 160, 202));
+// }
+
+
+body,html,app-root{
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.scroll {
+
+  height: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+
+}
+
+.scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  border-radius: 10px;
+}
+.scroll::-webkit-scrollbar-track {
+  background-color: rgba(12, 13, 15, 0.9);
+  border-radius: 10px;
+
+}
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #0478d8;
+  border-radius: 10px;
+}
+
+
+
+
+.scroll-vertical {
+
+  height: 500px;
+  width: 500px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+
+}
+
+.scroll-vertical::-webkit-scrollbar {
+  width: 10px;
+  height: 5px;
+  border-radius: 10px;
+}
+.scroll-vertical::-webkit-scrollbar-track {
+  background-color: rgba(12, 13, 15, 0.9);
+  border-radius: 10px;
+
+}
+.scroll-vertical::-webkit-scrollbar-thumb {
+  background-color: #0478d8;
+  border-radius: 10px;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

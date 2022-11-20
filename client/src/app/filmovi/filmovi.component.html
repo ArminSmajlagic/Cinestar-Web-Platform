@@ -1,0 +1,502 @@
+<H1>Filmovi</H1>
+
+<p id="pretraga">
+  <input type="text" class="form-control uzadd"   [(ngModel)]="ime" placeholder="Traži filmove..">
+</p>
+<div id="paging">
+Items per page <select  [(ngModel)]="pageSize" class="form-select form-select-sm select" id="items_per_page">
+  <option selected>2</option>
+  <option>3</option>
+  <option>4</option>
+  <option >5</option>
+  <option>10</option>
+  <option>20</option>
+  <option>30</option>
+  <option>40</option>
+  <option>50</option>
+</select>
+
+<div id="pagesDiv" *ngIf="paged">
+  <button (click)="pageClick(i+1)"
+          class="btn btn-light btn-sm" *ngFor="let item of [].constructor(this.totalPages); let i = index">{{i+1}}</button>
+</div>
+Current page <span id="current_page"></span><br>
+Total items <span id="total_items"></span><br>
+  <button class="btn btn-light btn-sm" (click)="paging(1)">Prikazi po stranicama</button><br>
+</div>
+<table class="table table-hover table-dark uza">
+  <tr >
+    <th>ID</th>
+    <th>Naziv</th>
+    <th>Žanr</th>
+    <th>Slika</th>
+    <th>Detalji Filma ID</th>
+    <th>Akcija</th>
+  </tr>
+  <tbody>
+
+  <tr *ngFor="let s of getFilmPodaci() ">
+    <td>{{s.id}}</td>
+    <td>{{s.naziv}}</td>
+    <td>{{s.zanr}}</td>
+    <td ><img class="profilna-slika" src="{{s.slikaUrl}}"></td>
+    <td *ngIf="s.detaljiFilmaID!=null">{{s.detaljiFilmaID}}</td>
+    <td *ngIf="s.detaljiFilmaID==null"><button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+    (click)="modalFilmNaziv=s.naziv;newFilmId=s.id">
+      Dodaj detalje</button></td>
+
+    <td>
+      <button data-bs-toggle="modal" data-bs-target="#brisanjeFilma" (click)="filmZaBrisanje=s"  class="btn btn-light">Obrisi</button>
+      <div class="modal fade" id="brisanjeFilma" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="brisanjeFilmaLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="color: black">
+              <h4>Jeste li sigurni da želite izbrisati ovaj film? </h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="obrisiFilm(filmZaBrisanje)">Da</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-light odmakni" data-bs-toggle="modal" data-bs-target="#editFilm" (click)="detalji(s)">Uredi</button>
+      <button class="btn btn-light odmakni" (click)="prikaziGlumce(s)" >Glumci</button>
+
+
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+
+
+<button type="button" class="btn btn-light" id="dodajButton" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+  Dodaj novi film
+</button>
+
+
+<!-- Modal ureddjivanje filma -->
+<div class="modal fade" id="editFilm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 *ngIf="odabraniFilm != null && prikaziDodavanje" class="modal-title" id="editFilmLabel">Uredjivanje filma ID {{odabraniFilm.id}}</h5>
+        <button  *ngIf="odabraniFilm != null && prikaziDodavanje" [disabled]="odabraniFilm.naziv=='' || odabraniFilm.zanr==''"
+                 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="odabraniFilm != null && prikaziDodavanje" >
+
+          <form>
+            <div class="form-group">
+              <label for="_naziv1">Naziv filma</label>
+              <input [(ngModel)]="odabraniFilm.naziv" [ngModelOptions]="{standalone: true}"
+                required type="text" class="form-control" id="_naziv1" name="_naziv1" #_naziv1="ngModel" placeholder="Unesite naziv filma">
+              <div *ngIf="_naziv1.invalid && (_naziv1.dirty || _naziv1.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="_naziv1.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="zanrEdit">Žanr</label>
+              <input  [(ngModel)]="odabraniFilm.zanr" [ngModelOptions]="{standalone: true}"
+                      required name="zanrEdit" #zanrEdit="ngModel"
+                      type="text" class="form-control" id="zanrEdit" placeholder="Unesite žanr">
+              <div *ngIf="zanrEdit.invalid && (zanrEdit.dirty || zanrEdit.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="zanrEdit.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="slika1">Link slike</label>
+              <input  [(ngModel)]="odabraniFilm.slikaUrl" [ngModelOptions]="{standalone: true}"
+                      type="text" class="form-control" id="slika1" >
+            </div>
+
+            <br>
+
+            <button type="button" class="btn btn-primary" id="dodajButton3" [disabled]="!_naziv1.valid || !zanrEdit.valid"  (click)="snimi()" data-bs-dismiss="modal">Sačuvaj</button>
+
+          </form>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!--<button type="button" class="btn btn-light" (click)="seDodaje()">Dodaj novi film</button>-->
+<!-- STARO EDITOVANJE FILMA
+<div *ngIf="odabraniFilm != null && prikaziDodavanje" class="uzad">
+  <h1>Uređivanje filma</h1>
+  <form>
+    <div class="form-group">
+      <label for="naziv1">Naziv filma</label>
+      <input [(ngModel)]="odabraniFilm.naziv" [ngModelOptions]="{standalone: true}"
+             type="text" class="form-control" id="naziv1" aria-describedby="emailHelp" placeholder="Unesite naziv filma">
+    </div>
+    <div class="form-group">
+      <label for="zanr1">Žanr</label>
+      <input  [(ngModel)]="odabraniFilm.zanr" [ngModelOptions]="{standalone: true}"
+              type="text" class="form-control" id="zanr1" aria-describedby="emailHelp" placeholder="Unesite žanr">
+    </div>
+    <div class="form-group">
+      <label for="slika1">Detalji filma ID</label>
+      <input [(ngModel)]="odabraniFilm.detaljiFilmaID" [ngModelOptions]="{standalone: true}"
+        type="number" class="form-control" id="slika1" aria-describedby="emailHelp" placeholder="Unesite žanr">
+
+    </div>
+
+    <br>
+    <button type="submit" (click)="snimi()" class="btn btn-light">Sačuvaj</button>
+    <button type="submit" (click)="prikaziDodavanje=false" style="margin-left: 10px" class="btn btn-light">Odustani</button>
+
+  </form>
+
+</div>
+-->
+
+
+<!--<button routerLink="/DetaljiFilma" >Idi na upravljanje Detaljima filma</button>
+<button routerLink="/Glumci" >Idi na upravljanje glumcima</button>-->
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="staticBackdropLabel2">Dodavanje filma</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div  >
+          <form >
+            <div class="form-group">
+              <label for="_naziv">Naziv filma</label>
+              <input id="_naziv" name="_naziv" class="form-control"
+                     required
+                     [(ngModel)]="add._naziv" #_naziv="ngModel" [ngModelOptions]="{standalone: true}"
+                     type="text" class="form-control"  placeholder="Unesite naziv filma"  >
+
+              <div *ngIf="_naziv.invalid && (_naziv.dirty || _naziv.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="_naziv.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+                <!--
+                <div *ngIf="_naziv.errors?.['pattern']">
+                  *Format loshhh.
+                </div>
+                -->
+
+
+              </div>
+
+            </div>
+            <div class="form-group">
+              <label for="_zanr">Žanr</label>
+              <input   [(ngModel)]="add._zanr"   #_zanr="ngModel" [ngModelOptions]="{standalone: true}"
+                       class="form-control"  required
+                       type="text" class="form-control" id="_zanr" name="_zanr" placeholder="Unesite žanr">
+
+              <div *ngIf="_zanr.invalid && (_zanr.dirty || _zanr.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="_zanr.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+            </div>
+
+
+            <label>Odaberi sliku</label><br>
+            <input id="slikaInput"  accept="image/*" type="file" (change)="preview()" /><br>
+
+            <label>Odabrana slika</label>
+            <img id="previewImg"  style="height: 200px; display: block; border: 1px solid blue;" />
+
+
+
+
+            <br>
+
+          </form>
+
+
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                [disabled]="!_naziv.valid || !_zanr.valid" (click)="DodajFilm()"  >Dodaj</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- DODAVANJE FILMA STARO
+<div *ngIf="dodaje" class="uzad">
+<h1>Dodavanje filma</h1>
+  <form >
+    <div class="form-group">
+      <label for="_naziv">Naziv filma</label>
+      <input id="_naziv" name="_naziv" class="form-control"
+             required
+        [(ngModel)]="add._naziv" #_naziv="ngModel" [ngModelOptions]="{standalone: true}"
+             type="text" class="form-control"  placeholder="Unesite naziv filma"  >
+
+      <div *ngIf="_naziv.invalid && (_naziv.dirty || _naziv.touched)"
+           class=" upozorenje">
+
+        <div *ngIf="_naziv.errors?.['required']">
+          *Obavezno polje.
+        </div>
+
+
+
+      </div>
+
+    </div>
+    <div class="form-group">
+      <label for="_zanr">Žanr</label>
+      <input   [(ngModel)]="add._zanr"   #_zanr="ngModel" [ngModelOptions]="{standalone: true}"
+               class="form-control"  required
+        type="text" class="form-control" id="_zanr" name="_zanr" placeholder="Unesite žanr">
+
+      <div *ngIf="_zanr.invalid && (_zanr.dirty || _zanr.touched)"
+           class=" upozorenje">
+
+        <div *ngIf="_zanr.errors?.['required']">
+          *Obavezno polje.
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="slika">Slika</label>
+      <input  (change)="onFileChange($event)" type="file" class="form-control" id="slika" aria-describedby="emailHelp" placeholder="Unesite žanr">
+      <img src="{{imageSrc}}" *ngIf="imageSrc" style="height: 300px; width:300px">
+    </div>
+
+
+    <br>
+    <button  type="submit" [disabled]="!_naziv.valid || !_zanr.valid" (click)="DodajFilm()" class="btn btn-light">Dodaj</button>
+    <button type="submit" (click)="dodaje=false" style="margin-left: 10px" class="btn btn-light">Odustani</button>
+  </form>
+
+
+
+</div>
+-->
+
+
+<H1 *ngIf="prikaziFilmGlumci">Glumci za film {{this.nazivFilma}}</H1>
+<table *ngIf="prikaziFilmGlumci" class="table table-hover table-dark uzadd">
+  <tr >
+    <th>ID</th>
+    <th>Ime</th>
+    <th>Prezime</th>
+    <th>Datum rodjenja</th>
+    <th>Akcija</th>
+  </tr>
+  <tbody>
+  <tr  *ngFor="let s of getGlumacPodaci()">
+    <td>{{s.id}}</td>
+    <td>{{s.ime}}</td>
+    <td>{{s.prezime}}</td>
+    <td >{{s.datumRodjenja |date}}</td>
+    <td>
+      <button (click)="ukloniSaFilma(s,this.filmID)" class="btn btn-light">Ukloni s filma</button>
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<!-- Button trigger modal Dodavanje glumca na film-->
+<button type="button" class="btn btn-light odmakni " id="dodajButton2"  (click)="dodajNaFilm(this.filmID)" *ngIf="prikaziFilmGlumci"
+        data-bs-toggle="modal" data-bs-target="#dodavanjeGlumcaNaFilm">
+  Dodaj glumca na film
+</button>
+
+<!--
+<div *ngIf="dodajeGlumca" class="uzad">
+  <h3>Dodavanje glumca na film {{this.nazivFilma}}</h3>
+  <form>
+    <div class="form-group">
+      <label for="idGlum">ID glumca</label>
+      <input [(ngModel)]="glumacID" [ngModelOptions]="{standalone: true}"
+             type="number" class="form-control" id="idGlum"  placeholder="Unesite ID glumca">
+    </div>
+    <br>
+    <button type="submit" (click)="DodajGlumcaNaFilm()" class="btn btn-light">Dodaj</button>
+  </form>
+</div>
+-->
+
+
+
+<!-- Modal Dodavanje glumca na film-->
+<div class="modal fade" id="dodavanjeGlumcaNaFilm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dodavanjeGlumcaNaFilmLabel">Dodavanje glumca na film {{this.nazivFilma}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="dodajeGlumca" >
+
+          <form>
+            <div class="form-group">
+              <label for="idGlum">ID glumca</label>
+              <input [(ngModel)]="glumacID" [ngModelOptions]="{standalone: true}"
+                     type="number" class="form-control" id="idGlum"  placeholder="Unesite ID glumca">
+            </div>
+            <br>
+
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="glumacID==0" type="button" (click)="DodajGlumcaNaFilm()" class="btn btn-primary" data-bs-dismiss="modal">Dodaj</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<app-detalji-filma *ngIf="prikaziDetalje"></app-detalji-filma>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Dodavanje detalja na film "{{modalFilmNaziv}}"</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <h1>Dodavanje detalja filma</h1>
+
+          <form>
+            <div class="form-group">
+              <label for="trajanje">Trajanje filma</label>
+              <input id="trajanje" name="trajanje" #_trajanje="ngModel" required
+                [(ngModel)]="this.addDetalji._trajanje" [ngModelOptions]="{standalone: true}"
+                     type="text" class="form-control"  placeholder="Unesite trajanje filma">
+
+              <div *ngIf="_trajanje.invalid && (_trajanje.dirty || _trajanje.touched)"
+                   class=" upozorenje">
+
+                <div *ngIf="_trajanje.errors?.['required']">
+                  *Polje za trajanje je obavezno.
+                </div>
+              </div>
+
+
+            </div>
+            <div class="form-group">
+              <label for="datumObjave">Datum objave(format GGGG-MM-DD) </label>
+              <input id="datumObjave" name="datumObjave" required pattern="^\d{4}[-]\d{2}[-]\d{2}$"
+                [(ngModel)]="this.addDetalji._datumObjave" #_datumObjave="ngModel" [ngModelOptions]="{standalone: true}"
+                      type="date" class="form-control"  placeholder="Unesite datum objave">
+
+
+              <div *ngIf="_datumObjave.invalid && (_datumObjave.dirty || _datumObjave.touched)"
+                   class="upozorenje">
+
+                <div *ngIf="_datumObjave.errors?.['pattern']">
+                  *Neispravan format datuma.
+                </div>
+
+                <div *ngIf="_datumObjave.errors?.['required']">
+                  *Obavezno polje.
+                </div>
+              </div>
+
+            </div>
+            <div class="form-group">
+              <label >Trailer</label>
+              <input  [(ngModel)]="this.addDetalji._trailer" [ngModelOptions]="{standalone: true}"
+                id="trailer" name="trailer"
+                      type="text" class="form-control"  placeholder="Unesite link trailera">
+
+
+            </div>
+            <br>
+            <!--<button type="submit" (click)="DodajDetaljeFilma()" class="btn btn-light">Dodaj</button>-->
+
+
+          </form>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" [disabled]="!_trajanje.valid || !_datumObjave.valid
+" (click)="DodajDetaljeFilma()" data-bs-dismiss="modal">Dodaj</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--                               ZA JS NOTIFIKACIJE      START                     -->
+
+<button (click)="toggleSubscription()" class="btn btn-primary" [disabled]="notificationMiddleware.pushNotificationStatus.isInProgress || !notificationMiddleware.pushNotificationStatus.isSupported">
+  <span *ngIf="!notificationMiddleware.pushNotificationStatus.isSupported">Push is NOT supported by this device</span>
+  <span *ngIf="notificationMiddleware.pushNotificationStatus.isSupported && notificationMiddleware.pushNotificationStatus.isSubscribed">Unsubscribe</span>
+  <span *ngIf="notificationMiddleware.pushNotificationStatus.isSupported && !notificationMiddleware.pushNotificationStatus.isSubscribed">Subscribe</span>
+</button>
+
+
+
+<!--<ul class="list-group">
+  <li class="list-group-item" *ngFor="let notif of notificationMiddleware.notifications">
+    <a [routerLink]="cleanUrl(notif.Url)" (click)="removeNotif(notif)">{{notif.Title}}
+      <small>{{notif.Message}}</small>
+    </a>
+  </li>
+</ul>-->
+<!--<ul class="list-group">
+  <li class="list-group-item" *ngFor="let notif of notificationMiddleware.notifications">
+    <a [routerLink]="cleanUrl(notif.Url)" (click)="removeNotif(notif)">{{notif.Title}}
+      <small>{{notif.Message}}</small>
+    </a>
+  </li>
+</ul>
+-->
+
+<!--                               ZA JS NOTIFIKACIJE      END                     -->
